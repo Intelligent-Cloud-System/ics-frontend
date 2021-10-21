@@ -2,6 +2,22 @@
   "name": "ics-frontend",
   "version": "0.0.1",
   "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Intelligent-Cloud-System/ics-frontend.git"
+  },
+  "keywords": [
+    "cloud",
+    "storage",
+    "ics",
+    "react"
+  ],
+  "author": "ICS Contributors",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Intelligent-Cloud-System/ics-frontend/issues"
+  },
+  "homepage": "https://github.com/Intelligent-Cloud-System/ics-frontend",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
