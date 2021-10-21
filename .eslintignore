@@ -3,4 +3,3 @@ lib-scripts
 lib-temp
 temp
 node_modules
-*.csv

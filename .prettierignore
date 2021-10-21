@@ -1,5 +1,4 @@
 package.json
-yarn.lock
 public/
 node_modules/
 build
