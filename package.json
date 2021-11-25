@@ -42,6 +42,8 @@
     "@types/react-typist": "^2.0.2",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
+    "openapi-typescript-codegen": "^0.12.3",
+    "node-fetch": "^2.6.1",
     "prettier": "^2.2.1",
     "react-scripts": "4.0.3",
     "ts-node": "^10.1.0",
@@ -52,7 +54,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prettify": "node ./node_modules/.bin/prettier --write ."
+    "prettify": "node ./node_modules/.bin/prettier --write .",
+    "generate-clients": "./node_modules/.bin/ts-node --project scripts/tsconfig.json ./scripts/generateServiceClient.ts"
   },
   "eslintConfig": {
     "extends": [
