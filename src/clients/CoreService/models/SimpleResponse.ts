@@ -3,5 +3,5 @@
 /* eslint-disable */
 
 export type SimpleResponse = {
-    'a': number;
-}
+	a: number;
+};
