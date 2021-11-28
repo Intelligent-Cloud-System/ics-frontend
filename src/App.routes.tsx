@@ -42,11 +42,10 @@ export const homePaths: {
 	[NO_ROLE]: 'auth/login',
 };
 
-function genRoutes(routes: RoutesConfig[], role?: string) {
+function genRoutes(routes: RoutesConfig[], role: string) {
 	return routes
 		.filter(({ allowedRoles }) => {
 			if (!allowedRoles) return true;
-			if (!role) return false;
 			return allowedRoles.includes(role);
 		})
 		.map(({ path, element, children }) => {

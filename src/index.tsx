@@ -7,7 +7,7 @@ import App from './App';
 
 const GlobalStyle = createGlobalStyle`
   body {
-		margin: 0;
+	margin: 0;
   }
   * {
     box-sizing: border-box;
