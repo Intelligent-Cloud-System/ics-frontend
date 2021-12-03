@@ -1,12 +1,14 @@
 import React from 'react';
+import StyledEngineProvider from '@mui/material/StyledEngineProvider';
 
-// components
 import { AppRoutes } from 'App.routes';
 
 function App() {
 	return (
 		<>
-			<AppRoutes />
+			<StyledEngineProvider injectFirst>
+				<AppRoutes />
+			</StyledEngineProvider>
 		</>
 	);
 }
