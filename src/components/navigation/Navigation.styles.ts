@@ -1,4 +1,4 @@
-import { Toolbar, Box, Breadcrumbs } from '@mui/material';
+import { Toolbar, Box, Breadcrumbs, Button } from '@mui/material';
 import styled from 'styled-components';
 
 export const NavToolbar = styled(Toolbar)`
@@ -19,4 +19,19 @@ export const MBreadcrumbs = styled(Breadcrumbs)`
 	margin-left: 1.5rem;
 	font-size: 1.1em;
 	font-weight: 600;
+`;
+
+export const PopoverContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	padding: 1.2rem;
+	text-align: center;
+`;
+
+export const PopoverButton = styled(Button).attrs({
+	variant: 'outlined',
+})`
+	margin-top: 1rem;
+	color: #512da8;
+	border-color: #512da8;
 `;

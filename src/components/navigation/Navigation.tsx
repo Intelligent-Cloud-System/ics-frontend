@@ -1,15 +1,33 @@
 import React from 'react';
-import { Container, IconButton, Typography, Link, Divider } from '@mui/material';
-import { NavToolbar, FlexBox, InlineBlock, MBreadcrumbs } from './Navigation.styles';
+import { Container, Typography, Link, Divider, Avatar, Popover } from '@mui/material';
+import {
+	NavToolbar,
+	FlexBox,
+	InlineBlock,
+	MBreadcrumbs,
+	PopoverContainer,
+	PopoverButton,
+} from './Navigation.styles';
 
-import PersonIcon from '@mui/icons-material/Person';
 import CloudIcon from '@mui/icons-material/Cloud';
+import LogoutIcon from '@mui/icons-material/Logout';
+import SettingsIcon from '@mui/icons-material/Settings';
+
 import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
 import { deepPurple } from '@mui/material/colors';
+import { useLogout } from 'hooks/auth/useLogout';
+import { stringAvatar } from 'shared/string-avatar';
 
 const color = deepPurple[700];
 
 export default function Navigation() {
+	const [opened, setOpened] = React.useState<boolean>(false);
+	const avatarContainerRef = React.useRef<HTMLDivElement>(null);
+	const logout = useLogout();
+
+	const handleClick = (): void => setOpened(!opened);
+	const handleClose = (): void => setOpened(false);
+
 	return (
 		<>
 			<NavToolbar>
@@ -43,9 +61,30 @@ export default function Navigation() {
 						</FlexBox>
 
 						<InlineBlock>
-							<IconButton>
-								<PersonIcon style={{ color }}></PersonIcon>
-							</IconButton>
+							<Avatar
+								{...stringAvatar('Name Surname')}
+								ref={avatarContainerRef}
+								onClick={handleClick}
+								style={{ cursor: 'pointer' }}
+							/>
+							<Popover
+								anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+								transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+								anchorEl={avatarContainerRef.current}
+								open={opened}
+								onClose={handleClose}
+							>
+								<PopoverContainer>
+									<Typography variant='button'>Name Surname</Typography>
+									<Divider orientation='horizontal' variant='middle' flexItem />
+									<PopoverButton startIcon={<SettingsIcon />} onClick={logout}>
+										Settings
+									</PopoverButton>
+									<PopoverButton startIcon={<LogoutIcon />} onClick={logout}>
+										Logout
+									</PopoverButton>
+								</PopoverContainer>
+							</Popover>
 						</InlineBlock>
 					</FlexBox>
 				</Container>
