@@ -3,7 +3,6 @@ import StyledEngineProvider from '@mui/material/StyledEngineProvider';
 
 import { AppRoutes } from 'App.routes';
 import { useAutoTokenRefresh } from 'hooks/auth/useAuthTokenRefresh';
-import Navigation from 'components/navigation';
 
 function App() {
 	useAutoTokenRefresh();
@@ -11,7 +10,7 @@ function App() {
 	return (
 		<>
 			<StyledEngineProvider injectFirst>
-				<Navigation />
+				<AppRoutes />
 			</StyledEngineProvider>
 		</>
 	);
