@@ -1,5 +1,4 @@
 import { useState, ChangeEvent } from 'react';
-import crypto from 'crypto';
 import path from 'path';
 import Typography from '@mui/material/Typography';
 import { CognitoIdentityProvider } from '@aws-sdk/client-cognito-identity-provider';
@@ -7,6 +6,7 @@ import { CognitoIdentityProvider } from '@aws-sdk/client-cognito-identity-provid
 import { appPaths } from 'App.routes';
 import { Form, WButton, WTextField, GridCenter, WLink } from './Registration.styles';
 import { Container, LinearProgress } from '@mui/material';
+import { hashCognitoSecret } from 'shared/util';
 
 export default function SignIn() {
 	const region: string = process.env.REACT_APP_REGION || '';
@@ -28,7 +28,7 @@ export default function SignIn() {
 			ClientId: clientId,
 			Password: password,
 			Username: email,
-			SecretHash: hashSecret(clientSecret, email, clientId),
+			SecretHash: hashCognitoSecret(clientSecret, email, clientId),
 			UserAttributes: [
 				{
 					Name: 'email',
@@ -43,13 +43,6 @@ export default function SignIn() {
 		} catch (e) {
 			console.log('Signup fail. Error: ', e);
 		}
-	};
-
-	const hashSecret = (clientSecret: string, username: string, clientId: string) => {
-		return crypto
-			.createHmac('SHA256', clientSecret)
-			.update(username + clientId)
-			.digest('base64');
 	};
 
 	return (

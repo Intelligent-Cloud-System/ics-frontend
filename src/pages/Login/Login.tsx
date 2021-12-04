@@ -1,6 +1,5 @@
 import { useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import crypto from 'crypto';
 import path from 'path';
 import Typography from '@mui/material/Typography';
 import { CognitoIdentityProvider } from '@aws-sdk/client-cognito-identity-provider';
@@ -8,6 +7,8 @@ import { CognitoIdentityProvider } from '@aws-sdk/client-cognito-identity-provid
 import { appPaths } from 'App.routes';
 import { Form, WButton, WTextField, GridCenter, WLink } from './Login.styles';
 import { Container, LinearProgress } from '@mui/material';
+import { useApiToken } from 'hooks/auth/useApiToken';
+import { hashCognitoSecret } from 'shared/util';
 
 export default function SignIn() {
 	const region: string = process.env.REACT_APP_REGION || '';
@@ -21,6 +22,8 @@ export default function SignIn() {
 	const [password, setPassword] = useState('');
 	const [isCognitoLoading, setIsCognitoLoading] = useState<boolean>(false);
 
+	const [, setApiToken] = useApiToken();
+
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
 		setIsCognitoLoading(true);
@@ -31,26 +34,23 @@ export default function SignIn() {
 			AuthParameters: {
 				USERNAME: email,
 				PASSWORD: password,
-				SECRET_HASH: hashSecret(clientSecret, email, clientId),
+				SECRET_HASH: hashCognitoSecret(clientSecret, email, clientId),
 			},
 		};
 
 		try {
 			const res = await provider.initiateAuth(params);
 			setIsCognitoLoading(false);
-			console.log(res);
+
+			setApiToken({
+				AccessToken: res.AuthenticationResult?.AccessToken,
+				RefreshToken: res.AuthenticationResult?.RefreshToken,
+			});
 		} catch (e) {
 			console.log('Error', e);
 		}
 
 		navigate(path.join(appPaths.auth.path, appPaths.auth.subpaths.login));
-	};
-
-	const hashSecret = (clientSecret: string, username: string, clientId: string) => {
-		return crypto
-			.createHmac('SHA256', clientSecret)
-			.update(username + clientId)
-			.digest('base64');
 	};
 
 	return (
