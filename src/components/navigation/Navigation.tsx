@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, IconButton, Typography, Link } from '@mui/material';
+import { Container, IconButton, Typography, Link, Divider } from '@mui/material';
 import { NavToolbar, FlexBox, InlineBlock, MBreadcrumbs } from './Navigation.styles';
 
 import PersonIcon from '@mui/icons-material/Person';
@@ -28,6 +28,7 @@ export default function Navigation() {
 								</Typography>
 							</Link>
 
+							<Divider orientation='vertical' variant='middle' flexItem sx={{ ml: 2 }} />
 							<MBreadcrumbs aria-label='breadcrumb'>
 								<Link
 									underline='hover'

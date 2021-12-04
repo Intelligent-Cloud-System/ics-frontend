@@ -1,4 +1,4 @@
-import { Toolbar, Box, TextField, Breadcrumbs } from '@mui/material';
+import { Toolbar, Box, Breadcrumbs } from '@mui/material';
 import styled from 'styled-components';
 
 export const NavToolbar = styled(Toolbar)`
@@ -13,13 +13,6 @@ export const FlexBox = styled(Box)`
 
 export const InlineBlock = styled(Box)`
 	display: inline-block;
-`;
-
-export const SearchField = styled(TextField).attrs({
-	size: 'small',
-	label: 'Search',
-})`
-	margin: 0 2rem;
 `;
 
 export const MBreadcrumbs = styled(Breadcrumbs)`
