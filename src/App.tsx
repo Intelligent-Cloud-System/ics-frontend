@@ -3,6 +3,7 @@ import StyledEngineProvider from '@mui/material/StyledEngineProvider';
 
 import { AppRoutes } from 'App.routes';
 import { useAutoTokenRefresh } from 'hooks/auth/useAuthTokenRefresh';
+import { SnackbarProvider } from 'hooks/notification/snackbar.provider';
 
 function App() {
 	useAutoTokenRefresh();
@@ -10,7 +11,9 @@ function App() {
 	return (
 		<>
 			<StyledEngineProvider injectFirst>
-				<AppRoutes />
+				<SnackbarProvider>
+					<AppRoutes />
+				</SnackbarProvider>
 			</StyledEngineProvider>
 		</>
 	);
