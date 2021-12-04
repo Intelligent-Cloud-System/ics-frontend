@@ -1,4 +1,4 @@
-import { Toolbar, Box, TextField } from '@mui/material';
+import { Toolbar, Box, TextField, Breadcrumbs } from '@mui/material';
 import styled from 'styled-components';
 
 export const NavToolbar = styled(Toolbar)`
@@ -20,4 +20,10 @@ export const SearchField = styled(TextField).attrs({
 	label: 'Search',
 })`
 	margin: 0 2rem;
+`;
+
+export const MBreadcrumbs = styled(Breadcrumbs)`
+	margin-left: 1.5rem;
+	font-size: 1.1em;
+	font-weight: 600;
 `;
