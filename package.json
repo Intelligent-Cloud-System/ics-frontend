@@ -22,6 +22,7 @@
     "@aws-sdk/client-cognito-identity-provider": "^3.42.0",
     "@emotion/react": "^11.6.0",
     "@emotion/styled": "^11.6.0",
+    "@material-ui/core": "^4.12.3",
     "@mui/material": "^5.2.1",
     "@mui/styled-engine-sc": "^5.1.0",
     "@mui/styles": "^5.2.1",
@@ -34,6 +35,7 @@
     "formik": "^2.2.9",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-dropzone": "^11.4.2",
     "react-router-dom": "^6.0.0-beta.0",
     "react-scripts": "4.0.3",
     "styled-components": "^5.3.3",
@@ -69,6 +71,7 @@
     "prettify": "node ./node_modules/.bin/prettier --write .",
     "generate-clients": "./node_modules/.bin/ts-node --project scripts/tsconfig.json ./scripts/generateServiceClient.ts"
   },
+  "husky": { "hooks": { "pre-push": "pnpm run prepush", "post-checkout": "yarnhook", "post-merge": "yarnhook", "post-rewrite": "yarnhook" } },
   "eslintConfig": {
     "extends": [
       "react-app",

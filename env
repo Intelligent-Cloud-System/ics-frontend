@@ -1,0 +1,5 @@
+SKIP_PREFLIGHT_CHECK=true
+REACT_APP_CORE_URL=http://localhost:3000/
+REACT_APP_CLIENT_ID=57l8lftgrhrevkhosddnui6c86
+REACT_APP_CLIENT_SECRET=15ae2320e79fvhlbdfpo0sg14h9gt1kjv6rcibelju7ul2qaru0a
+REACT_APP_REGION=eu-central-1
