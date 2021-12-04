@@ -22,6 +22,7 @@
     "@aws-sdk/client-cognito-identity-provider": "^3.42.0",
     "@emotion/react": "^11.6.0",
     "@emotion/styled": "^11.6.0",
+    "@mui/icons-material": "^5.2.0",
     "@mui/material": "^5.2.1",
     "@mui/styled-engine-sc": "^5.1.0",
     "@mui/styles": "^5.2.1",
