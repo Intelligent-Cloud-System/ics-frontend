@@ -3,9 +3,10 @@ import { useSnackbar } from 'notistack';
 import { ApiError } from 'clients/CoreService';
 
 export function extractErrorMessage(error: any) {
-	let message = error instanceof ApiError || error instanceof Error ? 
-		error.message : 
-		'Unable to perform operation';
+	const message =
+		error instanceof ApiError || error instanceof Error
+			? error.message
+			: 'Unable to perform operation';
 
 	return message;
 }
