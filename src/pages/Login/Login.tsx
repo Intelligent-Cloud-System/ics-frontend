@@ -40,6 +40,7 @@ export default function SignIn() {
 
 		try {
 			const res = await provider.initiateAuth(params);
+			console.log(res);
 			setIsCognitoLoading(false);
 
 			setApiToken({
