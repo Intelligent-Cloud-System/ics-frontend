@@ -23,6 +23,7 @@
     "@emotion/react": "^11.6.0",
     "@emotion/styled": "^11.6.0",
     "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
     "@mui/material": "^5.2.1",
     "@mui/styled-engine-sc": "^5.1.0",
     "@mui/styles": "^5.2.1",
@@ -71,7 +72,14 @@
     "prettify": "node ./node_modules/.bin/prettier --write .",
     "generate-clients": "./node_modules/.bin/ts-node --project scripts/tsconfig.json ./scripts/generateServiceClient.ts"
   },
-  "husky": { "hooks": { "pre-push": "pnpm run prepush", "post-checkout": "yarnhook", "post-merge": "yarnhook", "post-rewrite": "yarnhook" } },
+  "husky": {
+    "hooks": {
+      "pre-push": "pnpm run prepush",
+      "post-checkout": "yarnhook",
+      "post-merge": "yarnhook",
+      "post-rewrite": "yarnhook"
+    }
+  },
   "eslintConfig": {
     "extends": [
       "react-app",

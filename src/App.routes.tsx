@@ -12,6 +12,7 @@ interface RoutesConfig {
 
 const LazyLogin = React.lazy(() => import('pages/Login'));
 const LazyRegistration = React.lazy(() => import('pages/Registration'));
+const LazyUpload = React.lazy(() => import('pages/UploadPage'));
 
 export const appPaths = {
 	auth: {
@@ -32,6 +33,7 @@ const allRoutes: RoutesConfig[] = [
 		children: [
 			{ path: appPaths.auth.subpaths.login, element: <LazyLogin /> },
 			{ path: appPaths.auth.subpaths.register, element: <LazyRegistration /> },
+			{ path: 'files', element: <LazyUpload /> },
 		],
 	},
 ];
