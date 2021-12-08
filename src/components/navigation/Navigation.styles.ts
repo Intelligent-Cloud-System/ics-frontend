@@ -1,5 +1,8 @@
-import { Toolbar, Box, Breadcrumbs, Button } from '@mui/material';
+import { Toolbar, Box, Breadcrumbs, Button, Link } from '@mui/material';
+import { deepPurple } from '@mui/material/colors';
 import styled from 'styled-components';
+
+const color = deepPurple[700];
 
 export const NavToolbar = styled(Toolbar)`
 	background-color: #e0e0e0;
@@ -35,3 +38,9 @@ export const PopoverButton = styled(Button).attrs({
 	color: #512da8;
 	border-color: #512da8;
 `;
+
+export const NLink = styled(Link).attrs({
+	underline: 'hover',
+	sx: { display: 'flex', alignItems: 'center' },
+	color,
+})``;

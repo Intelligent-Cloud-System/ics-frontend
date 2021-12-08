@@ -1,5 +1,11 @@
 import React from 'react';
 import { Container, Typography, Link, Divider, Avatar, Popover } from '@mui/material';
+
+import CloudIcon from '@mui/icons-material/Cloud';
+import LogoutIcon from '@mui/icons-material/Logout';
+import SettingsIcon from '@mui/icons-material/Settings';
+import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
+
 import {
 	NavToolbar,
 	FlexBox,
@@ -7,18 +13,11 @@ import {
 	MBreadcrumbs,
 	PopoverContainer,
 	PopoverButton,
+	NLink,
 } from './Navigation.styles';
 
-import CloudIcon from '@mui/icons-material/Cloud';
-import LogoutIcon from '@mui/icons-material/Logout';
-import SettingsIcon from '@mui/icons-material/Settings';
-
-import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
-import { deepPurple } from '@mui/material/colors';
 import { useLogout } from 'hooks/auth/useLogout';
 import { stringAvatar } from 'shared/string-avatar';
-
-const color = deepPurple[700];
 
 export default function Navigation() {
 	const [opened, setOpened] = React.useState<boolean>(false);
@@ -34,29 +33,19 @@ export default function Navigation() {
 				<Container maxWidth={false}>
 					<FlexBox>
 						<FlexBox>
-							<Link
-								underline='none'
-								sx={{ display: 'flex', alignItems: 'center' }}
-								color={color}
-								href='/'
-							>
+							<NLink href='/'>
 								<CloudIcon sx={{ mr: 0.5 }} fontSize='large' />
 								<Typography variant='h4' display='inline-block'>
 									ICS
 								</Typography>
-							</Link>
+							</NLink>
 
 							<Divider orientation='vertical' variant='middle' flexItem sx={{ ml: 2 }} />
 							<MBreadcrumbs aria-label='breadcrumb'>
-								<Link
-									underline='hover'
-									sx={{ display: 'flex', alignItems: 'center' }}
-									color={color}
-									href='/'
-								>
+								<NLink href='/'>
 									<StorageRoundedIcon sx={{ mr: 0.5 }} fontSize='small' />
 									Files
-								</Link>
+								</NLink>
 							</MBreadcrumbs>
 						</FlexBox>
 
