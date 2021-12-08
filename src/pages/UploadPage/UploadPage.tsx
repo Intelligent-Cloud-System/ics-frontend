@@ -1,46 +1,43 @@
 import { Button, Card, CardContent, Grid } from '@mui/material';
 import React, { useCallback, useState } from 'react';
-import { FileError, FileRejection, useDropzone } from 'react-dropzone';
+import { FileRejection, useDropzone } from 'react-dropzone';
 import { ContainerDropDown } from './UploadPage.styles';
 
 // helpers
-import { getNewId } from 'shared/get-id';
 import { FileHeader } from './SingleFileUpload/FileHeader';
-
-export interface UploadableFile {
-	id: string;
-	file: File;
-	errors: FileError[];
-	url?: string;
-}
+import { useSnackbarOnError } from 'hooks/notification/useSnackbarOnError';
 
 function UploadPage() {
-	const [files, setFiles] = useState<UploadableFile[]>([]);
-	const onDrop = useCallback((accFiles: File[], rejFiles: FileRejection[]) => {
-		const mappedAcc = accFiles.map(file => ({ file, errors: [], id: getNewId() }));
-		const mappedRej = rejFiles.map(r => ({ ...r, id: getNewId() }));
-		setFiles(curr => [...curr, ...mappedAcc, ...mappedRej]);
-	}, []);
+	const [files, setFiles] = useState<Array<File>>([]);
+
+	const snackbarOnError = useSnackbarOnError();
+
+	const onDrop = useCallback(
+		(acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
+			if (rejectedFiles.length) {
+				const rejectedFilenames = rejectedFiles.map(file => file.file.name);
+				snackbarOnError(new Error(`Can't download files ${rejectedFilenames.join(', ')}`));
+			}
+
+			setFiles(curr => [...curr, ...acceptedFiles]);
+		},
+		[setFiles, snackbarOnError],
+	);
 
 	function onDelete(file: File) {
-		setFiles(curr => curr.filter(fw => fw.file !== file));
+		setFiles(curr => curr.filter(f => f !== file));
 	}
 
 	const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
 		onDrop,
-		maxSize: 300 * 1024, // 300KB
 	});
 
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
 
-		try {
-			console.log(files);
-			setFiles([]);
-		} catch (e) {
-			console.log('Fail. Error: ', e);
-		}
+		console.log(files);
 	};
+
 	return (
 		<>
 			<form>
@@ -57,9 +54,9 @@ function UploadPage() {
 									</ContainerDropDown>
 								</Grid>
 								<Grid container item spacing={2}>
-									{files.map(fileWrapper => (
-										<Grid xl={6} item key={fileWrapper.id}>
-											<FileHeader file={fileWrapper.file} onDelete={onDelete} />
+									{files.map(file => (
+										<Grid xl={6} item key={file.name}>
+											<FileHeader file={file} onDelete={onDelete} />
 										</Grid>
 									))}
 								</Grid>

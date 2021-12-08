@@ -16,7 +16,7 @@ export function FileHeader({ file, onDelete }: FileHeaderProps) {
 		<Card style={{ minWidth: '300px' }}>
 			<CardHeader
 				action={
-					<IconButton onClick={() => onDelete(file)} aria-label='add to favorites'>
+					<IconButton onClick={() => onDelete(file)}>
 						<DeleteIcon />
 					</IconButton>
 				}
