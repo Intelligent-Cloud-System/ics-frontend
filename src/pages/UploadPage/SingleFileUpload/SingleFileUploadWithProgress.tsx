@@ -1,4 +1,4 @@
-import { Grid, LinearProgress } from '@material-ui/core';
+import { Grid, LinearProgress } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { FileHeader } from './FileHeader';
 

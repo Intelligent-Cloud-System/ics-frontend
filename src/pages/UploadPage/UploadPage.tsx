@@ -1,11 +1,7 @@
-import { Button, Card, CardContent, Grid, makeStyles } from '@material-ui/core';
+import { Button, Card, CardContent, Grid } from '@mui/material';
 import React, { useCallback, useState } from 'react';
 import { FileError, FileRejection, useDropzone } from 'react-dropzone';
-import styled from 'styled-components';
 import { ContainerDropDown } from './UploadPage.styles';
-
-// components
-import { UploadError } from './SingleFileUpload/UploadError';
 
 // helpers
 import { getNewId } from 'shared/get-id';
@@ -26,17 +22,6 @@ function UploadPage() {
 		setFiles(curr => [...curr, ...mappedAcc, ...mappedRej]);
 	}, []);
 
-	function onUpload(file: File, url: string) {
-		setFiles(curr =>
-			curr.map(fw => {
-				if (fw.file === file) {
-					return { ...fw, url };
-				}
-				return fw;
-			}),
-		);
-	}
-
 	function onDelete(file: File) {
 		setFiles(curr => curr.filter(fw => fw.file !== file));
 	}
@@ -45,11 +30,6 @@ function UploadPage() {
 		onDrop,
 		maxSize: 300 * 1024, // 300KB
 	});
-
-	/*const { getRootProps, getInputProps } = useDropzone({
-		onDrop,
-		maxSize: 300 * 1024, // 300KB
-	});*/
 
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
@@ -79,15 +59,7 @@ function UploadPage() {
 								<Grid container item spacing={2}>
 									{files.map(fileWrapper => (
 										<Grid xl={6} item key={fileWrapper.id}>
-											{fileWrapper.errors.length ? (
-												<UploadError
-													file={fileWrapper.file}
-													errors={fileWrapper.errors}
-													onDelete={onDelete}
-												/>
-											) : (
-												<FileHeader file={fileWrapper.file} onDelete={onDelete} />
-											)}
+											<FileHeader file={fileWrapper.file} onDelete={onDelete} />
 										</Grid>
 									))}
 								</Grid>

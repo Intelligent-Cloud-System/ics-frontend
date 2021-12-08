@@ -2,6 +2,7 @@ import { Route, Navigate, Outlet } from 'react-router';
 import React, { memo, Suspense } from 'react';
 import { Routes } from 'react-router-dom';
 import LinearProgress from '@mui/material/LinearProgress';
+import { NavbarWrapper } from 'components/NavbarWrapper';
 
 interface RoutesConfig {
 	path: string;
@@ -22,6 +23,9 @@ export const appPaths = {
 			register: 'register',
 		},
 	},
+	files: {
+		path: 'files',
+	},
 };
 
 const NO_ROLE = 'NO_ROLE';
@@ -35,6 +39,12 @@ const allRoutes: RoutesConfig[] = [
 			{ path: appPaths.auth.subpaths.register, element: <LazyRegistration /> },
 			{ path: 'files', element: <LazyUpload /> },
 		],
+	},
+	{
+		allowedRoles: [NO_ROLE],
+		path: '',
+		element: <NavbarWrapper />,
+		children: [{ path: appPaths.files.path, element: <LazyUpload /> }],
 	},
 ];
 
