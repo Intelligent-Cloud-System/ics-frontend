@@ -1,5 +1,9 @@
 import React from 'react';
-import { Container, Typography, Link, Divider, Avatar, Popover } from '@mui/material';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import Avatar from '@mui/material/Avatar';
+import Popover from '@mui/material/Popover';
 
 import CloudIcon from '@mui/icons-material/Cloud';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -40,7 +44,7 @@ export default function Navigation() {
 								</Typography>
 							</NLink>
 
-							<Divider orientation='vertical' variant='middle' flexItem sx={{ ml: 2 }} />
+							<Divider orientation='vertical' variant='middle' flexItem sx={{ ml: 2, mr: 2 }} />
 							<MBreadcrumbs aria-label='breadcrumb'>
 								<NLink href='/'>
 									<StorageRoundedIcon sx={{ mr: 0.5 }} fontSize='small' />
