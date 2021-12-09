@@ -1,4 +1,8 @@
-import { Button, Card, CardContent, Grid } from '@mui/material';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Grid from '@mui/material/Grid';
+
 import React, { useCallback, useState } from 'react';
 import { FileRejection, useDropzone } from 'react-dropzone';
 import { ContainerDropDown } from './UploadPage.styles';
