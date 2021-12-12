@@ -51,6 +51,9 @@ export function useAutoTokenRefresh() {
 				// if new token was received - retry original request, but with updated authorization
 				if (newAuthToken) {
 					const newHeaders = new Headers(config?.headers);
+
+					newHeaders.set('Content-Type', 'application/json');
+
 					newHeaders.set('Authorization', `Bearer ${newAuthToken.AccessToken}`);
 
 					return originalFetch(url, {

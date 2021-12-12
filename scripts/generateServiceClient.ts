@@ -11,7 +11,7 @@ require('dotenv').config();
 const dependedMicroservices = [
 	{
 		serviceName: 'CoreService',
-		swaggerUrl: process.env.REACT_APP_CORE_URL + 'api-json',
+		swaggerUrl: process.env.REACT_APP_CORE_URL + '/api-json',
 	},
 ];
 

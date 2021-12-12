@@ -5,14 +5,21 @@ import Grid from '@mui/material/Grid';
 
 import React, { useCallback, useState } from 'react';
 import { FileRejection, useDropzone } from 'react-dropzone';
+import { useMutation } from 'react-query';
+
 import { ContainerDropDown } from './UploadPage.styles';
 
 // helpers
 import { FileHeader } from './SingleFileUpload/FileHeader';
 import { useSnackbarOnError } from 'hooks/notification/useSnackbarOnError';
+import { FileService } from 'clients/CoreService';
 
 function UploadPage() {
 	const [files, setFiles] = useState<Array<File>>([]);
+	const { mutate: uploadFile } = useMutation((file: File) => FileService.upload({ file }), {
+		onError: useSnackbarOnError(),
+		onSuccess: () => console.log('success'),
+	});
 
 	const snackbarOnError = useSnackbarOnError();
 
@@ -39,7 +46,7 @@ function UploadPage() {
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
 
-		console.log(files);
+		uploadFile(files[0]);
 	};
 
 	return (
