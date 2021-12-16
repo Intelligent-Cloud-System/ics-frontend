@@ -5,6 +5,7 @@ import StyledEngineProvider from '@mui/material/StyledEngineProvider';
 import { AppRoutes } from 'App.routes';
 import { useAutoTokenRefresh } from 'hooks/auth/useAuthTokenRefresh';
 import { SnackbarProvider } from 'hooks/notification/snackbar.provider';
+import { UserContextProvider } from 'context/UserContext';
 
 function App() {
 	useAutoTokenRefresh();
@@ -15,7 +16,9 @@ function App() {
 		<QueryClientProvider client={queryClient}>
 			<StyledEngineProvider injectFirst>
 				<SnackbarProvider>
-					<AppRoutes />
+					<UserContextProvider>
+						<AppRoutes />
+					</UserContextProvider>
 				</SnackbarProvider>
 			</StyledEngineProvider>
 		</QueryClientProvider>
