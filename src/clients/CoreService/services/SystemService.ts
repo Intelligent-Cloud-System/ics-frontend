@@ -12,7 +12,7 @@ export class SystemService {
      */
     public static healthy(): CancelablePromise<any> {
         return __request({
-            method: 'POST',
+            method: 'GET',
             path: `/system/healthy`,
         });
     }
