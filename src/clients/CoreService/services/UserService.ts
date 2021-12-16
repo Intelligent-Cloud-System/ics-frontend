@@ -24,4 +24,17 @@ export class UserService {
         });
     }
 
+    /**
+     * This is probably the solution we will need in the future
+     * when migrating to web sockets
+     * @returns UserResponse
+     * @throws ApiError
+     */
+    public static currentUser(): CancelablePromise<UserResponse> {
+        return __request({
+            method: 'GET',
+            path: `/users/current`,
+        });
+    }
+
 }
