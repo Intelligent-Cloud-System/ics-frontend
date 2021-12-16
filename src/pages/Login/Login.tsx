@@ -46,6 +46,7 @@ export default function SignIn() {
 			setApiToken({
 				AccessToken: res.AuthenticationResult?.AccessToken,
 				RefreshToken: res.AuthenticationResult?.RefreshToken,
+				username: email,
 			});
 		} catch (e) {
 			console.log('Error', e);

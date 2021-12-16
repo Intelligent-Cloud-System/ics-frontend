@@ -4,7 +4,9 @@ import { OpenAPI as CoreOpenAPi } from 'clients/CoreService';
 import { entities } from 'consts/entities';
 import { SharedStateReturn, useSharedState } from 'hooks/state/useSharedState';
 
-export type ApiToken = Pick<AuthenticationResultType, 'AccessToken' | 'RefreshToken'>;
+export type ApiToken = Pick<AuthenticationResultType, 'AccessToken' | 'RefreshToken'> & {
+	username: string;
+};
 
 export function useApiToken(): SharedStateReturn<null | ApiToken> {
 	const [apiToken, setApiToken] = useSharedState<null | ApiToken>(

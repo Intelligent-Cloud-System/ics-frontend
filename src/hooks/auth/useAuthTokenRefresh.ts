@@ -3,10 +3,12 @@ import { CognitoIdentityProvider } from '@aws-sdk/client-cognito-identity-provid
 
 import { useApiToken, ApiToken } from 'hooks/auth/useApiToken';
 import { useLogout } from './useLogout';
+import { hashCognitoSecret } from 'shared/util';
 
 export function useAutoTokenRefresh() {
 	const region: string = process.env.REACT_APP_REGION || '';
 	const clientId: string = process.env.REACT_APP_CLIENT_ID || '';
+	const clientSecret: string = process.env.REACT_APP_CLIENT_SECRET || '';
 
 	const provider = useMemo(() => new CognitoIdentityProvider({ region }), [region]);
 
@@ -33,21 +35,23 @@ export function useAutoTokenRefresh() {
 					AuthFlow: 'REFRESH_TOKEN_AUTH',
 					AuthParameters: {
 						REFRESH_TOKEN: apiToken.RefreshToken,
+						SECRET_HASH: hashCognitoSecret(clientSecret, apiToken.username, clientId),
 					},
 				};
 
 				try {
 					const res = await provider.initiateAuth(params);
+					console.log(res);
 					newAuthToken = {
 						AccessToken: res.AuthenticationResult?.AccessToken,
-						RefreshToken: res.AuthenticationResult?.RefreshToken,
+						RefreshToken: apiToken.RefreshToken,
+						username: apiToken.username,
 					};
 					setApiToken(newAuthToken);
 				} catch (e) {
 					console.log('token refresh error', e);
 					logout();
 				}
-
 				// if new token was received - retry original request, but with updated authorization
 				if (newAuthToken) {
 					const newHeaders = new Headers(config?.headers);
@@ -67,5 +71,5 @@ export function useAutoTokenRefresh() {
 		return () => {
 			global.fetch = originalFetch;
 		};
-	}, [apiToken, setApiToken, logout, clientId, provider]);
+	}, [apiToken, setApiToken, logout, clientId, provider, clientSecret]);
 }
