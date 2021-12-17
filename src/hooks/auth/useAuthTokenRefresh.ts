@@ -18,7 +18,6 @@ export function useAutoTokenRefresh() {
 	useEffect(() => {
 		const originalFetch = global.fetch;
 		global.fetch = async (url: RequestInfo, config?: RequestInit): Promise<Response> => {
-			// try to make request as usual
 			const response = await originalFetch(url, config);
 
 			let newAuthToken: ApiToken | null = null;
@@ -41,7 +40,6 @@ export function useAutoTokenRefresh() {
 
 				try {
 					const res = await provider.initiateAuth(params);
-					console.log(res);
 					newAuthToken = {
 						AccessToken: res.AuthenticationResult?.AccessToken,
 						RefreshToken: apiToken.RefreshToken,
@@ -52,7 +50,7 @@ export function useAutoTokenRefresh() {
 					console.log('token refresh error', e);
 					logout();
 				}
-				// if new token was received - retry original request, but with updated authorization
+
 				if (newAuthToken) {
 					const newHeaders = new Headers(config?.headers);
 					newHeaders.set('Authorization', `Bearer ${newAuthToken.AccessToken}`);
@@ -64,7 +62,6 @@ export function useAutoTokenRefresh() {
 				}
 			}
 
-			// otherwise return original response
 			return response;
 		};
 
