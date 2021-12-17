@@ -10,3 +10,5 @@ node_modules/
 
 # Swagger files
 temp
+
+.DS_Store
