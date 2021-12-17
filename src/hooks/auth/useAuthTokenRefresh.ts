@@ -53,6 +53,9 @@ export function useAutoTokenRefresh() {
 
 				if (newAuthToken) {
 					const newHeaders = new Headers(config?.headers);
+
+					newHeaders.set('Content-Type', 'application/json');
+
 					newHeaders.set('Authorization', `Bearer ${newAuthToken.AccessToken}`);
 
 					return originalFetch(url, {
