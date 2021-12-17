@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { DeleteFileRequest } from '../models/DeleteFileRequest';
 import type { FileDeleteResponse } from '../models/FileDeleteResponse';
 import type { FileResponse } from '../models/FileResponse';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -52,16 +53,18 @@ export class FileService {
     }
 
     /**
-     * @param id
+     * @param requestBody
      * @returns FileDeleteResponse
      * @throws ApiError
      */
     public static delete(
-        id: number,
+        requestBody: DeleteFileRequest,
     ): CancelablePromise<FileDeleteResponse> {
         return __request({
             method: 'DELETE',
-            path: `/files/delete/${id}`,
+            path: `/files/delete`,
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 
