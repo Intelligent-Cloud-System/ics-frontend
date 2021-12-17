@@ -1,2 +1,1 @@
-import { FileItem } from './FileItem';
-export default FileItem;
+export { FileItem } from './FileItem';

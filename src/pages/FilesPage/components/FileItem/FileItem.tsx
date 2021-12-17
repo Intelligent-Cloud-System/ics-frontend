@@ -6,13 +6,15 @@ import Box from '@mui/material/Box';
 
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
-export interface FileItem {
-	name: string;
-	size: string;
-}
+import { FileResponse } from '../../../../clients/CoreService';
+
+export type FileInfo = Pick<FileResponse, 'name' | 'size'> & {
+	id?: number;
+	loading?: boolean;
+};
 
 export interface FileItemProps {
-	file: FileItem;
+	file: FileInfo;
 }
 
 export function FileItem({ file }: FileItemProps) {

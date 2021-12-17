@@ -3,6 +3,7 @@ import React, { memo, Suspense } from 'react';
 import { Routes } from 'react-router-dom';
 import LinearProgress from '@mui/material/LinearProgress';
 import { NavbarWrapper } from 'components/NavbarWrapper';
+import { useRole } from './context/UserContext';
 
 interface RoutesConfig {
 	path: string;
@@ -41,7 +42,7 @@ const allRoutes: RoutesConfig[] = [
 		],
 	},
 	{
-		allowedRoles: [NO_ROLE],
+		allowedRoles: ['User'],
 		path: '',
 		element: <NavbarWrapper />,
 		children: [{ path: appPaths.files.path, element: <LazyUpload /> }],
@@ -52,6 +53,7 @@ export const homePaths: {
 	[role: string]: string;
 } = {
 	[NO_ROLE]: 'auth/login',
+	User: 'files',
 };
 
 function genRoutes(routes: RoutesConfig[], role: string) {
@@ -83,5 +85,5 @@ const AuthRoutes = memo(({ role = NO_ROLE }: { role?: string }) => {
 });
 
 export function AppRoutes() {
-	return <AuthRoutes role={NO_ROLE} />;
+	return <AuthRoutes role={useRole()} />;
 }
