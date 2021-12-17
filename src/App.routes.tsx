@@ -13,7 +13,7 @@ interface RoutesConfig {
 
 const LazyLogin = React.lazy(() => import('pages/Login'));
 const LazyRegistration = React.lazy(() => import('pages/Registration'));
-const LazyUpload = React.lazy(() => import('pages/UploadPage'));
+const LazyUpload = React.lazy(() => import('pages/FilesPage'));
 
 export const appPaths = {
 	auth: {

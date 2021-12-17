@@ -19,9 +19,9 @@ function App() {
 		<QueryClientProvider client={queryClient}>
 			<StyledEngineProvider injectFirst>
 				<SnackbarProvider>
-					<UserContextProvider>
-						<AppRoutes />
-					</UserContextProvider>
+					{/* <UserContextProvider> */}
+					<AppRoutes />
+					{/* </UserContextProvider> */}
 				</SnackbarProvider>
 			</StyledEngineProvider>
 		</QueryClientProvider>
