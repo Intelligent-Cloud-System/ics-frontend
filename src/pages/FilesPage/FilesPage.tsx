@@ -67,7 +67,6 @@ function FilesPage() {
 
 	const onDrop = useCallback(
 		(acceptedFiles: File[]) => {
-			console.log('files to upload:', acceptedFiles);
 			uploadFiles(acceptedFiles);
 		},
 		[uploadFiles],
@@ -97,7 +96,7 @@ function FilesPage() {
 							files.map(file => {
 								return (
 									<Grid item key={`${file.id}-${file.name}`}>
-										<FileItem file={{ name: file.name, size: file.size }}></FileItem>
+										<FileItem file={file}></FileItem>
 									</Grid>
 								);
 							})}

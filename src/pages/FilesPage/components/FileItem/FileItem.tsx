@@ -3,10 +3,11 @@ import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
-import { FileResponse } from '../../../../clients/CoreService';
+import { FileResponse } from 'clients/CoreService';
 
 export type FileInfo = Pick<FileResponse, 'name' | 'size'> & {
 	id?: number;
@@ -20,6 +21,7 @@ export interface FileItemProps {
 export function FileItem({ file }: FileItemProps) {
 	return (
 		<Card style={{ minWidth: '10rem', borderRadius: '0.5rem' }}>
+			{file.loading && <LinearProgress />}
 			<CardContent>
 				<Box sx={{ display: 'flex', alignContent: 'center' }}>
 					<InsertDriveFileIcon fontSize='large' sx={{ mr: 1 }} />
