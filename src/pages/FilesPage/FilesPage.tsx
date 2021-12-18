@@ -59,7 +59,7 @@ function FilesPage() {
 				setProcessingFiles(processingFiles => {
 					return [
 						...processingFiles,
-						...files.map(file => ({ name: file.name, size: file.name, isLoading: true })),
+						...files.map(file => ({ name: file.name, size: file.size, isLoading: true })),
 					];
 				});
 			},
@@ -68,8 +68,8 @@ function FilesPage() {
 
 	const { mutate: deleteFiles, isLoading: isDeleteLoading } = useMutation(
 		[entities.file],
-		(fileIds: Array<number>) => {
-			return FileService.delete({ ids: fileIds.map(id => id.toString()) });
+		(ids: Array<number>) => {
+			return FileService.delete({ ids });
 		},
 		{
 			onError: useSnackbarOnError(),

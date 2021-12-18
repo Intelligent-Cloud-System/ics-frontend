@@ -9,6 +9,7 @@ export type { DeleteFileRequest } from './models/DeleteFileRequest';
 export type { FileDeleteResponse } from './models/FileDeleteResponse';
 export type { FileResponse } from './models/FileResponse';
 export type { RegisterUserRequest } from './models/RegisterUserRequest';
+export type { StreamableFile } from './models/StreamableFile';
 export type { UserResponse } from './models/UserResponse';
 
 export { FileService } from './services/FileService';

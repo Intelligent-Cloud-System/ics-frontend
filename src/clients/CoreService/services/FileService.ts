@@ -4,6 +4,7 @@
 import type { DeleteFileRequest } from '../models/DeleteFileRequest';
 import type { FileDeleteResponse } from '../models/FileDeleteResponse';
 import type { FileResponse } from '../models/FileResponse';
+import type { StreamableFile } from '../models/StreamableFile';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 
@@ -40,12 +41,12 @@ export class FileService {
 
     /**
      * @param id
-     * @returns any
+     * @returns StreamableFile
      * @throws ApiError
      */
     public static download(
         id: number,
-    ): CancelablePromise<any> {
+    ): CancelablePromise<StreamableFile> {
         return __request({
             method: 'GET',
             path: `/files/download/${id}`,

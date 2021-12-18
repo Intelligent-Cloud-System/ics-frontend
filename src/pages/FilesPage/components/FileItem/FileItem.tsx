@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import { bytesToSize } from 'shared/bytes-size';
 
 import { FileResponse } from 'clients/CoreService';
 import { CardCheckbox, WCard } from '.';
@@ -45,7 +46,7 @@ export function FileItem({ file, checked, setChecked, displayCheckbox }: FileIte
 					<InsertDriveFileIcon fontSize='large' sx={{ mr: 1 }} />
 					<div>
 						<Typography variant='body2'>{file.name}</Typography>
-						<Typography variant='body2'>{file.size}</Typography>
+						<Typography variant='body2'>{bytesToSize(file.size)}</Typography>
 					</div>
 				</Box>
 			</CardContent>
