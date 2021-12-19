@@ -127,7 +127,11 @@ function FilesPage() {
 						/>
 						<label htmlFor={'upload-file-btn'}>Upload</label>
 					</FileMenuButton>
-					<FileMenuButton startIcon={<DownloadIcon />} onClick={() => saveFile(checkedIds[0])}>
+					<FileMenuButton
+						startIcon={<DownloadIcon />}
+						onClick={() => saveFile(checkedIds[0])}
+						disabled={!(checkedIds.length === 1)}
+					>
 						Save
 					</FileMenuButton>
 					<FileMenuButton
@@ -135,6 +139,7 @@ function FilesPage() {
 						onClick={() => {
 							deleteFiles(checkedIds);
 						}}
+						disabled={checkedIds.length === 0}
 					>
 						Delete
 					</FileMenuButton>
