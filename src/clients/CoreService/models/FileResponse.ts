@@ -5,5 +5,5 @@
 export type FileResponse = {
     id: number;
     name: string;
-    size: string;
+    size: number;
 }

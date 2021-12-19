@@ -40,7 +40,6 @@ export default function SignIn() {
 
 		try {
 			const res = await provider.initiateAuth(params);
-			console.log(res);
 			setIsCognitoLoading(false);
 
 			setApiToken({
@@ -52,7 +51,7 @@ export default function SignIn() {
 			console.log('Error', e);
 		}
 
-		navigate(path.join(appPaths.auth.path, appPaths.auth.subpaths.login));
+		navigate(path.join(appPaths.auth.path, appPaths.auth.subPaths.login));
 	};
 
 	return (
@@ -78,7 +77,7 @@ export default function SignIn() {
 						/>
 						<WButton onClick={handleSubmit}>Sign In</WButton>
 					</Form>
-					<WLink to={path.join('/', appPaths.auth.path, appPaths.auth.subpaths.register)}>
+					<WLink to={path.join('/', appPaths.auth.path, appPaths.auth.subPaths.register)}>
 						Don&apos;t have an account? Sign Up
 					</WLink>
 				</GridCenter>
