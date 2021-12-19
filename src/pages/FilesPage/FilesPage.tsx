@@ -20,12 +20,13 @@ import {
 
 // helpers
 import { FileItem } from './components/FileItem';
-import { FileService } from 'clients/CoreService';
+import { FileLinkResponse, FileService } from 'clients/CoreService';
 import { useSnackbarOnError } from 'hooks/notification/useSnackbarOnError';
 import { entities } from 'consts/entities';
 import { FileInfo } from './components/FileItem/FileItem';
 
 function FilesPage() {
+	const coreUrl: string = process.env.REACT_APP_CORE_URL || '';
 	const queryClient = useQueryClient();
 	const [processingFiles, setProcessingFiles] = useState<Array<FileInfo>>([]);
 	const [checkedIds, setCheckedIds] = useState<Array<number>>([]);
@@ -80,6 +81,17 @@ function FilesPage() {
 		},
 	);
 
+	const { mutate: saveFile, isLoading: isSaveLoading } = useMutation(
+		[entities.file],
+		async (fileId: number) => FileService.getFileLink(fileId),
+		{
+			onError: useSnackbarOnError(),
+			onSuccess: (response: FileLinkResponse) => {
+				window.open(coreUrl + response.link);
+			},
+		},
+	);
+
 	const onDrop = useCallback(
 		(acceptedFiles: File[]) => {
 			uploadFiles(acceptedFiles);
@@ -95,8 +107,8 @@ function FilesPage() {
 	);
 
 	const isLoading = useMemo(
-		() => isFilesLoading || isDeleteLoading,
-		[isFilesLoading, isDeleteLoading],
+		() => isFilesLoading || isDeleteLoading || isSaveLoading,
+		[isFilesLoading, isDeleteLoading, isSaveLoading],
 	);
 
 	return (
@@ -115,7 +127,9 @@ function FilesPage() {
 						/>
 						<label htmlFor={'upload-file-btn'}>Upload</label>
 					</FileMenuButton>
-					<FileMenuButton startIcon={<DownloadIcon />}>Save</FileMenuButton>
+					<FileMenuButton startIcon={<DownloadIcon />} onClick={() => saveFile(checkedIds[0])}>
+						Save
+					</FileMenuButton>
 					<FileMenuButton
 						startIcon={<DeleteIcon />}
 						onClick={() => {
