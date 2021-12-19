@@ -2,5 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type StreamableFile = {
+export type FileLinkResponse = {
+    link: string;
 }

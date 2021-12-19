@@ -80,7 +80,7 @@ export default function SignIn() {
 						/>
 						<WButton onClick={handleSubmit}>Sign Up</WButton>
 					</Form>
-					<WLink to={path.join('/', appPaths.auth.path, appPaths.auth.subpaths.login)}>
+					<WLink to={path.join('/', appPaths.auth.path, appPaths.auth.subPaths.login)}>
 						Already have an account? Sign In
 					</WLink>
 				</GridCenter>

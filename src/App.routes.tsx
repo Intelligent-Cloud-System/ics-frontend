@@ -2,6 +2,8 @@ import { Route, Navigate, Outlet } from 'react-router';
 import React, { memo, Suspense } from 'react';
 import { Routes } from 'react-router-dom';
 import LinearProgress from '@mui/material/LinearProgress';
+import path from 'path';
+
 import { NavbarWrapper } from 'components/NavbarWrapper';
 import { useRole } from './context/UserContext';
 
@@ -19,7 +21,7 @@ const LazyUpload = React.lazy(() => import('pages/FilesPage'));
 export const appPaths = {
 	auth: {
 		path: 'auth',
-		subpaths: {
+		subPaths: {
 			login: 'login',
 			register: 'register',
 		},
@@ -36,9 +38,8 @@ const allRoutes: RoutesConfig[] = [
 		path: appPaths.auth.path,
 		element: <Outlet />,
 		children: [
-			{ path: appPaths.auth.subpaths.login, element: <LazyLogin /> },
-			{ path: appPaths.auth.subpaths.register, element: <LazyRegistration /> },
-			{ path: 'files', element: <LazyUpload /> },
+			{ path: appPaths.auth.subPaths.login, element: <LazyLogin /> },
+			{ path: appPaths.auth.subPaths.register, element: <LazyRegistration /> },
 		],
 	},
 	{
@@ -52,8 +53,8 @@ const allRoutes: RoutesConfig[] = [
 export const homePaths: {
 	[role: string]: string;
 } = {
-	[NO_ROLE]: 'auth/login',
-	User: 'files',
+	[NO_ROLE]: path.join(appPaths.auth.path, appPaths.auth.subPaths.login),
+	User: appPaths.files.path,
 };
 
 function genRoutes(routes: RoutesConfig[], role: string) {
