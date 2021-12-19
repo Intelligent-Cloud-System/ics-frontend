@@ -7,6 +7,7 @@ import { useAutoTokenRefresh } from 'hooks/auth/useAuthTokenRefresh';
 import { SnackbarProvider } from 'hooks/notification/snackbar.provider';
 import { OpenAPI as CoreOpenAPi } from 'clients/CoreService';
 import { UserContextProvider } from 'context/UserContext';
+import UserProfile from 'pages/UserProfile';
 
 CoreOpenAPi.BASE = process.env.REACT_APP_CORE_URL as string;
 
@@ -19,9 +20,9 @@ function App() {
 		<QueryClientProvider client={queryClient}>
 			<StyledEngineProvider injectFirst>
 				<SnackbarProvider>
-					<UserContextProvider>
-						<AppRoutes />
-					</UserContextProvider>
+					{/* <UserContextProvider> */}
+					<UserProfile />
+					{/* </UserContextProvider> */}
 				</SnackbarProvider>
 			</StyledEngineProvider>
 		</QueryClientProvider>
