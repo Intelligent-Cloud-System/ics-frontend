@@ -86,7 +86,13 @@ export default function Navigation() {
 									>
 										Settings
 									</PopoverButton>
-									<PopoverButton startIcon={<LogoutIcon />} onClick={logout}>
+									<PopoverButton
+										startIcon={<LogoutIcon />}
+										onClick={() => {
+											logout();
+											window.location.reload();
+										}}
+									>
 										Logout
 									</PopoverButton>
 								</PopoverContainer>
