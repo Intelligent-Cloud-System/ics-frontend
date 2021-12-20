@@ -5,9 +5,10 @@ import Card from '@mui/material/Card';
 import styled from 'styled-components';
 
 export const UAvatar = styled(Avatar)`
-	height: 64px;
+	height: 80px;
 	margin-bottom: 2rem;
-	width: 64px;
+	width: 80px;
+	font-size: 2rem;
 `;
 
 export const FlexBoxColumn = styled(Box)`
