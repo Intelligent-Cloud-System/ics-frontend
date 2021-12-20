@@ -5,21 +5,17 @@ import Typography from '@mui/material/Typography';
 import { stringAvatar } from 'shared/string-avatar';
 import { AccountButton, FlexBoxColumn, UAvatar, UCard } from './Account.styles';
 
-const user = {
-	name: 'Name Surname',
-	timezone: 'GTM-7',
-};
+interface AccountProps {
+	username: string;
+}
 
-export const Account = () => (
+export const Account = ({ username }: AccountProps): JSX.Element => (
 	<UCard>
 		<CardContent>
 			<FlexBoxColumn>
-				<UAvatar {...stringAvatar('Name Surname')} />
+				<UAvatar {...stringAvatar(username)} />
 				<Typography color='textPrimary' gutterBottom variant='h5'>
-					{user.name}
-				</Typography>
-				<Typography color='textSecondary' variant='body2'>
-					{user.timezone}
+					{username}
 				</Typography>
 			</FlexBoxColumn>
 		</CardContent>

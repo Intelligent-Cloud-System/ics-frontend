@@ -5,18 +5,24 @@ import CardHeader from '@mui/material/CardHeader';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import { AccountButton, FlexEndBox } from './AccountProfileDetails.styles';
+import { AccountButton, FlexEndBox, UCard } from './AccountProfileDetails.styles';
 
-export const AccountProfileDetails = () => {
-	const [firstName, setFirstName] = useState('');
-	const [lastName, setLastName] = useState('');
+interface AccountProfileDetailsProps {
+	email: string;
+	firstName: string;
+	lastName: string;
+}
+
+export const AccountProfileDetails = (props: AccountProfileDetailsProps): JSX.Element => {
+	const [firstName, setFirstName] = useState(props.firstName);
+	const [lastName, setLastName] = useState(props.lastName);
 	const [oldPassword, setOldPassword] = useState('');
 	const [newPassword, setNewPassword] = useState('');
 
 	return (
 		<form autoComplete='off' noValidate>
-			<Card>
-				<CardHeader subheader='The information can be edited' title={'demo@email.com'} />
+			<UCard>
+				<CardHeader subheader='The information can be edited' title={props.email} />
 				<Divider />
 				<CardContent>
 					<Grid container spacing={3}>
@@ -62,7 +68,7 @@ export const AccountProfileDetails = () => {
 				<FlexEndBox>
 					<AccountButton variant='outlined'>Save details</AccountButton>
 				</FlexEndBox>
-			</Card>
+			</UCard>
 		</form>
 	);
 };

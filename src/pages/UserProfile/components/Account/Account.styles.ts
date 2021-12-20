@@ -22,6 +22,7 @@ export const AccountButton = styled(Button)`
 `;
 
 export const UCard = styled(Card)`
+	background-color: #fcfcfc;
 	min-width: 20em;
 	margin: 0 2rem;
 `;

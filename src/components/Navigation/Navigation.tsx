@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
+import path from 'path';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Avatar from '@mui/material/Avatar';
 import Popover from '@mui/material/Popover';
-
 import CloudIcon from '@mui/icons-material/Cloud';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -24,6 +24,8 @@ import { useLogout } from 'hooks/auth/useLogout';
 import { stringAvatar } from 'shared/string-avatar';
 import { UserResponse } from 'clients/CoreService';
 import { UserContext } from 'context/UserContext';
+import { useNavigate } from 'react-router-dom';
+import { appPaths } from 'App.routes';
 
 export default function Navigation() {
 	const user = useContext<UserResponse | null>(UserContext);
@@ -35,6 +37,7 @@ export default function Navigation() {
 
 	const handleClick = (): void => setOpened(!opened);
 	const handleClose = (): void => setOpened(false);
+	const navigate = useNavigate();
 
 	return (
 		<>
@@ -75,7 +78,12 @@ export default function Navigation() {
 								<PopoverContainer>
 									<Typography variant='button'>{username}</Typography>
 									<Divider orientation='horizontal' variant='middle' flexItem />
-									<PopoverButton startIcon={<SettingsIcon />} onClick={logout}>
+									<PopoverButton
+										startIcon={<SettingsIcon />}
+										onClick={() =>
+											navigate(path.join(appPaths.profile.path, appPaths.profile.subPaths.settings))
+										}
+									>
 										Settings
 									</PopoverButton>
 									<PopoverButton startIcon={<LogoutIcon />} onClick={logout}>
