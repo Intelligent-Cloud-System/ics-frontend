@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
@@ -22,9 +22,14 @@ import {
 
 import { useLogout } from 'hooks/auth/useLogout';
 import { stringAvatar } from 'shared/string-avatar';
+import { UserResponse } from 'clients/CoreService';
+import { UserContext } from 'context/UserContext';
 
 export default function Navigation() {
-	const [opened, setOpened] = React.useState<boolean>(false);
+	const user = useContext<UserResponse | null>(UserContext);
+	const [username] = useState<string>(`${user?.firstName} ${user?.lastName}`);
+	const [opened, setOpened] = useState<boolean>(false);
+
 	const avatarContainerRef = React.useRef<HTMLDivElement>(null);
 	const logout = useLogout();
 
@@ -55,7 +60,7 @@ export default function Navigation() {
 
 						<InlineBlock>
 							<Avatar
-								{...stringAvatar('Name Surname')}
+								{...stringAvatar(username)}
 								ref={avatarContainerRef}
 								onClick={handleClick}
 								style={{ cursor: 'pointer' }}
@@ -68,7 +73,7 @@ export default function Navigation() {
 								onClose={handleClose}
 							>
 								<PopoverContainer>
-									<Typography variant='button'>Name Surname</Typography>
+									<Typography variant='button'>{username}</Typography>
 									<Divider orientation='horizontal' variant='middle' flexItem />
 									<PopoverButton startIcon={<SettingsIcon />} onClick={logout}>
 										Settings
