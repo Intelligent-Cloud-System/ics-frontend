@@ -25,6 +25,6 @@ export const UserContextProvider: FC = ({ children }) => {
 	return apiToken && !data ? (
 		<LinearProgress />
 	) : (
-		<UserContext.Provider value={data || null}>{children}</UserContext.Provider>
+		<UserContext.Provider value={apiToken ? data || null : null}>{children}</UserContext.Provider>
 	);
 };
