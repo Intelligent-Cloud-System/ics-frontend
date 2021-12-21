@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1998bd20-fa19-4d6f-ab46-65ce85042630" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/pages/Login/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Login/Login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.routes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.routes.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +54,7 @@
       <workItem from="1640074705741" duration="221000" />
       <workItem from="1640099533504" duration="568000" />
       <workItem from="1640112011964" duration="1093000" />
-      <workItem from="1640124282316" duration="964000" />
+      <workItem from="1640124282316" duration="1165000" />
     </task>
     <servers />
   </component>
