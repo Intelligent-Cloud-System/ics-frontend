@@ -1,12 +1,17 @@
 import { useState, ChangeEvent } from 'react';
-import path from 'path';
-import Typography from '@mui/material/Typography';
+import { useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-query';
 import { CognitoIdentityProvider } from '@aws-sdk/client-cognito-identity-provider';
+import LinearProgress from '@mui/material/LinearProgress';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import path from 'path';
 
-import { appPaths } from 'App.routes';
 import { Form, WButton, WTextField, GridCenter, WLink } from './Registration.styles';
-import { Container, LinearProgress } from '@mui/material';
+import { useSnackbarOnError } from 'hooks/notification/useSnackbarOnError';
+import { RegisterUserRequest, UserService } from 'clients/CoreService';
 import { hashCognitoSecret } from 'shared/util';
+import { appPaths } from 'App.routes';
 
 export default function SignIn() {
 	const region: string = process.env.REACT_APP_REGION || '';
@@ -19,6 +24,19 @@ export default function SignIn() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [isCognitoLoading, setIsCognitoLoading] = useState<boolean>(false);
+	const navigate = useNavigate();
+	const userError = useSnackbarOnError();
+
+	const { mutate: registerUser } = useMutation(
+		[],
+		(user: RegisterUserRequest) => {
+			return UserService.register(user);
+		},
+		{
+			onError: useSnackbarOnError(),
+			onSuccess: () => navigate(path.join(appPaths.auth.path, appPaths.auth.subPaths.login)),
+		},
+	);
 
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
@@ -38,11 +56,13 @@ export default function SignIn() {
 		};
 
 		try {
-			const res = await provider.signUp(params);
-			console.log(res);
+			await provider.signUp(params);
+			registerUser({ firstName, lastName, email });
 		} catch (e) {
-			console.log('Signup fail. Error: ', e);
+			userError(e);
 		}
+
+		setIsCognitoLoading(false);
 	};
 
 	return (
