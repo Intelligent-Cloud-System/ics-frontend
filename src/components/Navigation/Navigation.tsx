@@ -45,7 +45,7 @@ export default function Navigation() {
 				<Container maxWidth={false}>
 					<FlexBox>
 						<FlexBox>
-							<NLink href='/files'>
+							<NLink href={`/${appPaths.files.path}`}>
 								<CloudIcon sx={{ mr: 0.5 }} fontSize='large' />
 								<Typography variant='h4' display='inline-block'>
 									ICS
@@ -54,7 +54,7 @@ export default function Navigation() {
 
 							<Divider orientation='vertical' variant='middle' flexItem sx={{ ml: 2, mr: 2 }} />
 							<MBreadcrumbs aria-label='breadcrumb'>
-								<NLink href='/files'>
+								<NLink href={`/${appPaths.files.path}`}>
 									<StorageRoundedIcon sx={{ mr: 0.5 }} fontSize='small' />
 									Files
 								</NLink>
