@@ -42,7 +42,6 @@ export default function SignIn() {
 
 		try {
 			const res = await provider.initiateAuth(params);
-			setIsCognitoLoading(false);
 
 			setApiToken({
 				AccessToken: res.AuthenticationResult?.AccessToken,
@@ -52,6 +51,8 @@ export default function SignIn() {
 		} catch (e) {
 			userError(e);
 		}
+
+		setIsCognitoLoading(false);
 
 		navigate(path.join(appPaths.auth.path, appPaths.auth.subPaths.login));
 	};

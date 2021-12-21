@@ -28,6 +28,7 @@ export const FilesGridContainer = styled(Grid).attrs({
 export const FileMenuButton = styled(Button)`
 	background-color: #ffffff;
 	color: #512da8;
+	font-size: 1rem;
 `;
 
 export const FilesContainer = styled(Box)`

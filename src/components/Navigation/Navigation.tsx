@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import path from 'path';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Avatar from '@mui/material/Avatar';
 import Popover from '@mui/material/Popover';
-
 import CloudIcon from '@mui/icons-material/Cloud';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -22,14 +22,22 @@ import {
 
 import { useLogout } from 'hooks/auth/useLogout';
 import { stringAvatar } from 'shared/string-avatar';
+import { UserResponse } from 'clients/CoreService';
+import { UserContext } from 'context/UserContext';
+import { useNavigate } from 'react-router-dom';
+import { appPaths } from 'App.routes';
 
 export default function Navigation() {
-	const [opened, setOpened] = React.useState<boolean>(false);
+	const user = useContext<UserResponse | null>(UserContext);
+	const [username] = useState<string>(`${user?.firstName} ${user?.lastName}`);
+	const [opened, setOpened] = useState<boolean>(false);
+
 	const avatarContainerRef = React.useRef<HTMLDivElement>(null);
 	const logout = useLogout();
 
 	const handleClick = (): void => setOpened(!opened);
 	const handleClose = (): void => setOpened(false);
+	const navigate = useNavigate();
 
 	return (
 		<>
@@ -37,7 +45,7 @@ export default function Navigation() {
 				<Container maxWidth={false}>
 					<FlexBox>
 						<FlexBox>
-							<NLink href='/'>
+							<NLink href={`/${appPaths.files.path}`}>
 								<CloudIcon sx={{ mr: 0.5 }} fontSize='large' />
 								<Typography variant='h4' display='inline-block'>
 									ICS
@@ -46,7 +54,7 @@ export default function Navigation() {
 
 							<Divider orientation='vertical' variant='middle' flexItem sx={{ ml: 2, mr: 2 }} />
 							<MBreadcrumbs aria-label='breadcrumb'>
-								<NLink href='/'>
+								<NLink href={`/${appPaths.files.path}`}>
 									<StorageRoundedIcon sx={{ mr: 0.5 }} fontSize='small' />
 									Files
 								</NLink>
@@ -55,7 +63,7 @@ export default function Navigation() {
 
 						<InlineBlock>
 							<Avatar
-								{...stringAvatar('Name Surname')}
+								{...stringAvatar(username)}
 								ref={avatarContainerRef}
 								onClick={handleClick}
 								style={{ cursor: 'pointer' }}
@@ -68,12 +76,22 @@ export default function Navigation() {
 								onClose={handleClose}
 							>
 								<PopoverContainer>
-									<Typography variant='button'>Name Surname</Typography>
+									<Typography variant='button'>{username}</Typography>
 									<Divider orientation='horizontal' variant='middle' flexItem />
-									<PopoverButton startIcon={<SettingsIcon />} onClick={logout}>
+									<PopoverButton
+										startIcon={<SettingsIcon />}
+										onClick={() =>
+											navigate(path.join(appPaths.profile.path, appPaths.profile.subPaths.settings))
+										}
+									>
 										Settings
 									</PopoverButton>
-									<PopoverButton startIcon={<LogoutIcon />} onClick={logout}>
+									<PopoverButton
+										startIcon={<LogoutIcon />}
+										onClick={() => {
+											logout();
+										}}
+									>
 										Logout
 									</PopoverButton>
 								</PopoverContainer>

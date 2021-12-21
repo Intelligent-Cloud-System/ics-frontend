@@ -17,6 +17,7 @@ interface RoutesConfig {
 const LazyLogin = React.lazy(() => import('pages/Login'));
 const LazyRegistration = React.lazy(() => import('pages/Registration'));
 const LazyUpload = React.lazy(() => import('pages/FilesPage'));
+const LazyUserProfile = React.lazy(() => import('pages/UserProfile'));
 
 export const appPaths = {
 	auth: {
@@ -28,6 +29,12 @@ export const appPaths = {
 	},
 	files: {
 		path: 'files',
+	},
+	profile: {
+		path: 'profile',
+		subPaths: {
+			settings: 'settings',
+		},
 	},
 };
 
@@ -46,7 +53,13 @@ const allRoutes: RoutesConfig[] = [
 		allowedRoles: ['User'],
 		path: '',
 		element: <NavbarWrapper />,
-		children: [{ path: appPaths.files.path, element: <LazyUpload /> }],
+		children: [
+			{ path: appPaths.files.path, element: <LazyUpload /> },
+			{
+				path: path.join(appPaths.profile.path, appPaths.profile.subPaths.settings),
+				element: <LazyUserProfile />,
+			},
+		],
 	},
 ];
 
