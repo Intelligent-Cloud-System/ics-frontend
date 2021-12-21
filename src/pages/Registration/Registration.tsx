@@ -11,7 +11,6 @@ import { Form, WButton, WTextField, GridCenter, WLink } from './Registration.sty
 import { useSnackbarOnError } from 'hooks/notification/useSnackbarOnError';
 import { RegisterUserRequest, UserService } from 'clients/CoreService';
 import { hashCognitoSecret } from 'shared/util';
-import { entities } from 'consts/entities';
 import { appPaths } from 'App.routes';
 
 export default function SignIn() {
@@ -29,7 +28,7 @@ export default function SignIn() {
 	const userError = useSnackbarOnError();
 
 	const { mutate: registerUser } = useMutation(
-		[entities.user],
+		[],
 		(user: RegisterUserRequest) => {
 			return UserService.register(user);
 		},
