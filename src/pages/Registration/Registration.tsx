@@ -1,6 +1,6 @@
 import { useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
 import { CognitoIdentityProvider } from '@aws-sdk/client-cognito-identity-provider';
 import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
@@ -26,7 +26,6 @@ export default function SignIn() {
 	const [password, setPassword] = useState('');
 	const [isCognitoLoading, setIsCognitoLoading] = useState<boolean>(false);
 	const navigate = useNavigate();
-	const queryClient = useQueryClient();
 	const userError = useSnackbarOnError();
 
 	const { mutate: registerUser } = useMutation(
@@ -36,7 +35,7 @@ export default function SignIn() {
 		},
 		{
 			onError: useSnackbarOnError(),
-			onSuccess: () => queryClient.invalidateQueries(entities.user),
+			onSuccess: () => navigate(path.join(appPaths.auth.path, appPaths.auth.subPaths.login)),
 		},
 	);
 
@@ -60,7 +59,6 @@ export default function SignIn() {
 		try {
 			await provider.signUp(params);
 			registerUser({ firstName, lastName, email });
-			navigate(path.join(appPaths.auth.path, appPaths.auth.subPaths.login));
 		} catch (e) {
 			userError(e);
 		}

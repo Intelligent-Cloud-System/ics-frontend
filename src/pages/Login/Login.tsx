@@ -9,6 +9,7 @@ import { Form, WButton, WTextField, GridCenter, WLink } from './Login.styles';
 import { Container, LinearProgress } from '@mui/material';
 import { useApiToken } from 'hooks/auth/useApiToken';
 import { hashCognitoSecret } from 'shared/util';
+import { useSnackbarOnError } from 'hooks/notification/useSnackbarOnError';
 
 export default function SignIn() {
 	const region: string = process.env.REACT_APP_REGION || '';
@@ -17,6 +18,7 @@ export default function SignIn() {
 	const provider = new CognitoIdentityProvider({ region });
 
 	const navigate = useNavigate();
+	const userError = useSnackbarOnError();
 
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -48,7 +50,7 @@ export default function SignIn() {
 				username: email,
 			});
 		} catch (e) {
-			console.log('Error', e);
+			userError(e);
 		}
 
 		navigate(path.join(appPaths.auth.path, appPaths.auth.subPaths.login));
