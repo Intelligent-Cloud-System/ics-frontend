@@ -51,15 +51,15 @@ const allRoutes: RoutesConfig[] = [
 	},
 	{
 		allowedRoles: ['User'],
-		path: appPaths.profile.path,
-		element: <NavbarWrapper />,
-		children: [{ path: appPaths.profile.subPaths.settings, element: <LazyUserProfile /> }],
-	},
-	{
-		allowedRoles: ['User'],
 		path: '',
 		element: <NavbarWrapper />,
-		children: [{ path: appPaths.files.path, element: <LazyUpload /> }],
+		children: [
+			{ path: appPaths.files.path, element: <LazyUpload /> },
+			{
+				path: path.join(appPaths.profile.path, appPaths.profile.subPaths.settings),
+				element: <LazyUserProfile />,
+			},
+		],
 	},
 ];
 
