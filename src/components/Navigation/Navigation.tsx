@@ -90,7 +90,6 @@ export default function Navigation() {
 										startIcon={<LogoutIcon />}
 										onClick={() => {
 											logout();
-											window.location.reload();
 										}}
 									>
 										Logout

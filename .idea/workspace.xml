@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1998bd20-fa19-4d6f-ab46-65ce85042630" name="Changes" comment="" />
+    <list default="true" id="1998bd20-fa19-4d6f-ab46-65ce85042630" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Navigation/Navigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Navigation/Navigation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/UserContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/UserContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/auth/useLogout.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/auth/useLogout.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,7 +34,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="yarn" />
-    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -45,7 +50,14 @@
       <workItem from="1639761982590" duration="16514000" />
       <workItem from="1639825724034" duration="3500000" />
       <workItem from="1639870441615" duration="378000" />
-      <workItem from="1639915981586" duration="10409000" />
+      <workItem from="1639915981586" duration="10451000" />
+      <workItem from="1639955877888" duration="668000" />
+      <workItem from="1639988953097" duration="715000" />
+      <workItem from="1640025718553" duration="277000" />
+      <workItem from="1640074705741" duration="221000" />
+      <workItem from="1640099533504" duration="568000" />
+      <workItem from="1640112011964" duration="1093000" />
+      <workItem from="1640124282316" duration="711000" />
     </task>
     <servers />
   </component>
