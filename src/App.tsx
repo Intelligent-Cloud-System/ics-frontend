@@ -1,31 +1,30 @@
 import React from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import StyledEngineProvider from '@mui/material/StyledEngineProvider';
 
-// components
-import Home from 'pages/Home';
-import Login from 'pages/Login';
-import Registration from 'pages/Registration';
+import { AppRoutes } from 'App.routes';
+import { useAutoTokenRefresh } from 'hooks/auth/useAuthTokenRefresh';
+import { SnackbarProvider } from 'hooks/notification/snackbar.provider';
+import { OpenAPI as CoreOpenAPi } from 'clients/CoreService';
+import { UserContextProvider } from 'context/UserContext';
+
+CoreOpenAPi.BASE = process.env.REACT_APP_CORE_URL as string;
 
 function App() {
+	useAutoTokenRefresh();
+
+	const queryClient = new QueryClient();
+
 	return (
-		<>
-			<main className='content_wrapper'>
-				<Switch>
-					<Route path='/home'>
-						<Home />
-					</Route>
-					<Route path='/login'>
-						<Login />
-					</Route>
-					<Route path='/register'>
-						<Registration />
-					</Route>
-					<Route path='*'>
-						<Redirect to='/home' />
-					</Route>
-				</Switch>
-			</main>
-		</>
+		<QueryClientProvider client={queryClient}>
+			<StyledEngineProvider injectFirst>
+				<SnackbarProvider>
+					<UserContextProvider>
+						<AppRoutes />
+					</UserContextProvider>
+				</SnackbarProvider>
+			</StyledEngineProvider>
+		</QueryClientProvider>
 	);
 }
 
