@@ -2,6 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type FileLinkResponse = {
-    link: string;
+export type FolderResponse = {
+    path: string;
 }

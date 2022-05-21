@@ -4,8 +4,8 @@ import Card from '@mui/material/Card';
 
 export const WCard = styled(Card)`
 	position: relative;
-	minwidth: 10rem;
-	borderradius: 0.5rem;
+	min-width: 10rem;
+	border-radius: 0.5rem;
 	padding-right: 1.5rem;
 	cursor: pointer;
 `;

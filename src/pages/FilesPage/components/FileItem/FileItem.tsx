@@ -10,8 +10,7 @@ import { bytesToSize } from 'shared/bytes-size';
 import { FileResponse } from 'clients/CoreService';
 import { CardCheckbox, WCard } from '.';
 
-export type FileInfo = Pick<FileResponse, 'name' | 'size'> & {
-	id?: number;
+export type FileInfo = Pick<FileResponse, 'basename' | 'size' | 'lastModifiedAt'> & {
 	isLoading?: boolean;
 };
 
@@ -19,20 +18,20 @@ export interface FileItemProps {
 	file: FileInfo;
 	displayCheckbox: boolean;
 	checked?: boolean;
-	setChecked: React.Dispatch<React.SetStateAction<number[]>>;
+	setChecked: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export function FileItem({ file, checked, setChecked, displayCheckbox }: FileItemProps) {
-	const isCheckDisabled = file.isLoading || !file.id;
+	const isCheckDisabled = file.isLoading || !file.basename;
 
 	const handleClick = () => {
-		if (!isCheckDisabled && file.id !== undefined) {
+		if (!isCheckDisabled && file.basename !== undefined) {
 			if (checked) {
 				setChecked(ids => {
-					return ids.filter(id => id !== file.id);
+					return ids.filter(basename => basename !== file.basename);
 				});
 			} else {
-				setChecked(ids => [...ids, file.id as number]);
+				setChecked(basenames => [...basenames, file.basename]);
 			}
 		}
 	};
@@ -45,7 +44,7 @@ export function FileItem({ file, checked, setChecked, displayCheckbox }: FileIte
 				<Box sx={{ display: 'flex', alignContent: 'center' }}>
 					<InsertDriveFileIcon fontSize='large' sx={{ mr: 1 }} />
 					<div>
-						<Typography variant='body2'>{file.name}</Typography>
+						<Typography variant='body2'>{file.basename}</Typography>
 						<Typography variant='body2'>{bytesToSize(file.size)}</Typography>
 					</div>
 				</Box>

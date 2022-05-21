@@ -20,100 +20,44 @@ import {
 
 // helpers
 import { FileItem } from './components/FileItem';
-import { FileLinkResponse, FileService } from 'clients/CoreService';
+import { FileManagerService, ListResponse } from 'clients/CoreService';
 import { useSnackbarOnError } from 'hooks/notification/useSnackbarOnError';
 import { entities } from 'consts/entities';
 import { FileInfo } from './components/FileItem/FileItem';
+import { FolderItem } from './components/FolderItem';
 
 function FilesPage() {
 	const coreUrl: string = process.env.REACT_APP_CORE_URL || '';
 	const queryClient = useQueryClient();
+	const [currentLocation, setCurrentLocation] = useState<string>('/');
 	const [processingFiles, setProcessingFiles] = useState<Array<FileInfo>>([]);
-	const [checkedIds, setCheckedIds] = useState<Array<number>>([]);
+	const [checkedIds, setCheckedIds] = useState<Array<string>>([]);
 
 	const { data: existingFiles, isLoading: isFilesLoading } = useQuery(
-		[entities.file],
-		() => FileService.list(),
+		[entities.file, currentLocation],
+		() => FileManagerService.list(currentLocation),
 		{
 			onError: useSnackbarOnError(),
 		},
 	);
 
-	const { mutate: uploadFiles } = useMutation(
-		[entities.file],
-		(files: Array<File>) => {
-			return Promise.all(
-				files.map(async (file: File) => {
-					await FileService.upload({ file });
-
-					await queryClient.invalidateQueries(entities.file);
-					setProcessingFiles(processingFiles =>
-						processingFiles?.filter(processedFile => processedFile.name !== file.name),
-					);
-				}),
-			);
-		},
-		{
-			onError: useSnackbarOnError(),
-			onSuccess: () => queryClient.invalidateQueries(entities.file),
-			onMutate: (files: File[]) => {
-				setProcessingFiles(processingFiles => {
-					return [
-						...processingFiles,
-						...files.map(file => ({ name: file.name, size: file.size, isLoading: true })),
-					];
-				});
-			},
-		},
-	);
-
-	const { mutate: deleteFiles, isLoading: isDeleteLoading } = useMutation(
-		[entities.file],
-		(ids: Array<number>) => {
-			return FileService.delete({ ids });
-		},
-		{
-			onError: useSnackbarOnError(),
-			onSettled: () => {
-				queryClient.invalidateQueries(entities.file);
-				setCheckedIds([]);
-			},
-		},
-	);
-
-	const { mutate: saveFile, isLoading: isSaveLoading } = useMutation(
-		[entities.file],
-		async (fileId: number) => FileService.getFileLink(fileId),
-		{
-			onError: useSnackbarOnError(),
-			onSuccess: (response: FileLinkResponse) => {
-				window.open(coreUrl + response.link);
-			},
-		},
-	);
-
-	const onDrop = useCallback(
-		(acceptedFiles: File[]) => {
-			uploadFiles(acceptedFiles);
-		},
-		[uploadFiles],
-	);
+	const onDrop = useCallback(() => {}, []);
 
 	const { getRootProps, isDragActive } = useDropzone({ onDrop });
 
 	const files = useMemo(
-		() => [...(existingFiles || []), ...processingFiles],
+		() => [...(existingFiles?.files || []), ...processingFiles],
 		[existingFiles, processingFiles],
 	);
 
-	const isLoading = useMemo(
-		() => isFilesLoading || isDeleteLoading || isSaveLoading,
-		[isFilesLoading, isDeleteLoading, isSaveLoading],
-	);
+	const folders = useMemo(() => [...(existingFiles?.folders || [])], [existingFiles]);
+
+	const isLoading = useMemo(() => isFilesLoading, [isFilesLoading]);
 
 	return (
 		<>
 			<Container maxWidth={false}>
+				<Divider orientation='horizontal' variant='middle' />
 				<FlexBox>
 					<FileMenuButton startIcon={<AddIcon />}>
 						<input
@@ -121,42 +65,48 @@ function FilesPage() {
 							id={'upload-file-btn'}
 							hidden
 							multiple={true}
-							onChange={(event: ChangeEvent<HTMLInputElement>) => {
-								uploadFiles(Array.from(event.target.files || []));
-							}}
+							onChange={(event: ChangeEvent<HTMLInputElement>) => {}}
 						/>
 						<label htmlFor={'upload-file-btn'}>Upload</label>
 					</FileMenuButton>
 					<FileMenuButton
 						startIcon={<DownloadIcon />}
-						onClick={() => saveFile(checkedIds[0])}
+						onClick={() => {}}
 						disabled={!(checkedIds.length === 1)}
 					>
 						Save
 					</FileMenuButton>
 					<FileMenuButton
 						startIcon={<DeleteIcon />}
-						onClick={() => {
-							deleteFiles(checkedIds);
-						}}
+						onClick={() => {}}
 						disabled={checkedIds.length === 0}
 					>
 						Delete
 					</FileMenuButton>
 				</FlexBox>
-				<UHeader>Files</UHeader>
 				<Divider orientation='horizontal' variant='middle' />
 				<FilesContainer {...getRootProps()} style={isDragActive ? { borderColor: '#512da8' } : {}}>
 					<FilesGridContainer>
 						{isLoading && <LinearProgress />}
+						{folders &&
+							folders.map(folder => (
+								<Grid item key={`${folder.path}`}>
+									<FolderItem
+										folder={folder}
+										checked={!!folder.path && checkedIds.includes(folder.path)}
+										setChecked={setCheckedIds}
+										setLocation={setCurrentLocation}
+									/>
+								</Grid>
+							))}
 						{files &&
 							files.map(file => {
 								return (
-									<Grid item key={`${file.id}-${file.name}`}>
+									<Grid item key={`${file.basename}-${file.lastModifiedAt}`}>
 										<FileItem
 											file={file}
 											displayCheckbox={!!checkedIds.length}
-											checked={!!file.id && checkedIds.includes(file.id)}
+											checked={!!file.basename && checkedIds.includes(file.basename)}
 											setChecked={setCheckedIds}
 										/>
 									</Grid>
