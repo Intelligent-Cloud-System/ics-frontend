@@ -1,7 +1,5 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
-import CardContent from '@mui/material/CardContent';
-import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 
 import { bytesToSize } from 'shared/bytes-size';
