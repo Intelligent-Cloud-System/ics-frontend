@@ -8,29 +8,35 @@ import {
 } from './FolderItem.styles';
 import { FolderResponse } from 'clients/CoreService';
 import { renderLongName } from '../renderers/renderLongName';
+import { getBasename } from 'shared/util';
 
 export interface FolderItemProps {
 	folder: FolderResponse;
 	checked?: boolean;
+	isCheckedFile: boolean;
 	setChecked: React.Dispatch<React.SetStateAction<string[]>>;
 	setLocation: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export function FolderItem({ folder, checked, setChecked, setLocation }: FolderItemProps) {
+export function FolderItem({
+	folder,
+	checked,
+	isCheckedFile,
+	setChecked,
+	setLocation,
+}: FolderItemProps) {
 	const handleClick = () => {
-		if (folder.path !== undefined) {
-			if (checked) {
-				setChecked(ids => {
-					return ids.filter(basename => basename !== folder.path);
-				});
-			} else {
-				setChecked(checked => [...checked, folder.path]);
-			}
+		if (!folder.path || isCheckedFile) return;
+		if (checked) {
+			setChecked(ids => {
+				return ids.filter(basename => basename !== folder.path);
+			});
+		} else {
+			setChecked(checked => [...checked, folder.path]);
 		}
 	};
 
-	const folderName = folder.path.split('/').at(-2);
-
+	const folderName: string = getBasename(folder.path);
 	return (
 		<FolderItemContainer>
 			<FolderItemCard onClick={() => setLocation(folder.path)}>

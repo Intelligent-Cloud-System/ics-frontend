@@ -1,13 +1,20 @@
 import styled from 'styled-components';
 import Checkbox from '@mui/material/Checkbox';
 import Card from '@mui/material/Card';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import Box from '@mui/material/Box';
 
-export const WCard = styled(Card)`
+export const FileIcon = styled(InsertDriveFileIcon)`
+	font-size: 90px;
+	color: #6e52b3;
+	margin-bottom: 6px;
+`;
+
+export const FileCard = styled(Card)`
+	display: inline-block;
+	background: transparent;
+	box-shadow: none;
 	position: relative;
-	min-width: 10rem;
-	border-radius: 0.5rem;
-	padding-right: 1.5rem;
-	cursor: pointer;
 `;
 
 export const CardCheckbox = styled(Checkbox).attrs({
@@ -17,4 +24,8 @@ export const CardCheckbox = styled(Checkbox).attrs({
 	top: 0.4rem;
 	right: 0.4rem;
 	padding: 0;
+`;
+
+export const FileItemContainer = styled(Box)`
+	text-align: center;
 `;
