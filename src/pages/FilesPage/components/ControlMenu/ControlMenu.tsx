@@ -3,7 +3,7 @@ import UploadRoundedIcon from '@mui/icons-material/UploadRounded';
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
-import { FileMenuButton, FlexBox } from './ControlMenu.styles';
+import { FileMenuButton, FlexBox, Label } from './ControlMenu.styles';
 import { CreateFolderDialog } from '../CreateFolderDialog';
 
 export interface ControlMenuProps {
@@ -34,9 +34,9 @@ export function ControlMenu({
 					multiple={true}
 					onChange={onChangeUpload}
 				/>
-				<label htmlFor={'upload-file-btn'}>
+				<Label htmlFor={'upload-file-btn'}>
 					<UploadRoundedIcon />
-				</label>
+				</Label>
 			</FileMenuButton>
 			<FileMenuButton onClick={onClickDownload} disabled={disabledDownload}>
 				<div>

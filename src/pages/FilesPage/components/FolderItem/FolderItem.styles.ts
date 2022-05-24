@@ -21,12 +21,13 @@ export const FolderItemCheckbox = styled(Checkbox).attrs({
 })`
 	position: absolute;
 	top: 1.6rem;
-	right: 0.6rem;
+	left: 0.6rem;
 	padding: 0;
-	color: ${({ theme }) => theme.palette.grey[50]} !important;
+	color: ${({ theme }) => theme.palette.text.primary} !important;
 `;
 
 export const FolderItemContainer = styled(Box)`
 	text-align: center;
 	cursor: pointer;
+	color: ${({ theme }) => theme.palette.text.primary};
 `;

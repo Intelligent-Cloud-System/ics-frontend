@@ -13,3 +13,7 @@ export const FlexBox = styled(Box)`
 	align-items: center;
 	margin-top: 0.5rem;
 `;
+
+export const Label = styled.label`
+	cursor: pointer;
+`;

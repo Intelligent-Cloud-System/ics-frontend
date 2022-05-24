@@ -14,15 +14,17 @@ export const FileCard = styled(Card)`
 	background: transparent;
 	box-shadow: none;
 	position: relative;
+	color: ${({ theme }) => theme.palette.text.primary};
 `;
 
 export const CardCheckbox = styled(Checkbox).attrs({
 	size: 'small',
 })`
 	position: absolute;
-	top: 0.4rem;
-	right: 0.4rem;
+	top: 0.6rem;
+	left: 1rem;
 	padding: 0;
+	color: ${({ theme }) => theme.palette.text.primary} !important;
 `;
 
 export const FileItemContainer = styled(Box)`

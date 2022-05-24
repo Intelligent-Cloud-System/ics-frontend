@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 export const UHeader = styled(Typography).attrs({
 	variant: 'h6',
 })`
-	color: ${({ theme }) => theme.palette.grey['A700']};
+	color: ${({ theme }) => theme.palette.text.primary};
 	margin-left: 1rem;
 	font-family: sans-serif;
 `;
