@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useMemo, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import Container from '@mui/material/Container';
@@ -44,6 +44,11 @@ function FilesPage() {
 	const folders = useMemo(() => [...(existingContent?.folders || [])], [existingContent]);
 
 	const isLoading = useMemo(() => isContentLoading, [isContentLoading]);
+
+	useEffect(() => {
+		setCheckedFolders([]);
+		setCheckedFiles([]);
+	}, [currentLocation]);
 
 	return (
 		<>
