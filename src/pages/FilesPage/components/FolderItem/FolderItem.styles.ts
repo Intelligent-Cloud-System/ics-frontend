@@ -5,13 +5,12 @@ import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
 
 export const FolderItemIcon = styled(FolderIcon)`
-	font-size: 100px;
+	font-size: 6.25rem;
 	color: #6e52b3;
-	margin-bottom: -10px;
+	margin-bottom: -0.625rem;
 `;
 
 export const FolderItemCard = styled(Card)`
-	display: inline-block;
 	background: transparent;
 	box-shadow: none;
 	position: relative;

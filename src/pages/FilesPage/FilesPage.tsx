@@ -24,7 +24,7 @@ function FilesPage() {
 	const [checkedFolders, setCheckedFolders] = useState<Array<string>>([]);
 	const [checkedFiles, setCheckedFiles] = useState<Array<string>>([]);
 
-	const { data: existingFiles, isLoading: isFilesLoading } = useQuery(
+	const { data: existingContent, isLoading: isContentLoading } = useQuery(
 		[entities.file, currentLocation],
 		() => FileManagerService.list(currentLocation),
 		{
@@ -37,24 +37,26 @@ function FilesPage() {
 	const { getRootProps, isDragActive } = useDropzone({ onDrop });
 
 	const files = useMemo(
-		() => [...(existingFiles?.files || []), ...processingFiles],
-		[existingFiles, processingFiles],
+		() => [...(existingContent?.files || []), ...processingFiles],
+		[existingContent, processingFiles],
 	);
 
-	const folders = useMemo(() => [...(existingFiles?.folders || [])], [existingFiles]);
+	const folders = useMemo(() => [...(existingContent?.folders || [])], [existingContent]);
 
-	const isLoading = useMemo(() => isFilesLoading, [isFilesLoading]);
+	const isLoading = useMemo(() => isContentLoading, [isContentLoading]);
 
 	return (
 		<>
 			<Container maxWidth={false}>
 				<ControlMenu
+					location={currentLocation}
 					disabledDownload={!(checkedFiles.length === 1)}
 					disabledDelete={checkedFiles.length === 0 && checkedFolders.length === 0}
 					onChangeUpload={(event: ChangeEvent<HTMLInputElement>) => {}}
 					onClickDownload={() => {}}
 					onClickDelete={() => {}}
 				/>
+				<Divider orientation='horizontal' variant='middle' />
 				<LocationLinks location={currentLocation} setLocation={setCurrentLocation} />
 				<Divider orientation='horizontal' variant='middle' />
 				<FilesContainer {...getRootProps()} style={isDragActive ? { borderColor: '#512da8' } : {}}>

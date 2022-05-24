@@ -1,11 +1,13 @@
 import React from 'react';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import DownloadIcon from '@mui/icons-material/Download';
+import UploadRoundedIcon from '@mui/icons-material/UploadRounded';
+import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 import { FileMenuButton, FlexBox } from './ControlMenu.styles';
+import { CreateFolderDialog } from '../CreateFolderDialog';
 
 export interface ControlMenuProps {
+	location: string;
 	disabledDownload: boolean;
 	disabledDelete: boolean;
 	onChangeUpload: React.ChangeEventHandler<HTMLInputElement>;
@@ -14,6 +16,7 @@ export interface ControlMenuProps {
 }
 
 export function ControlMenu({
+	location,
 	disabledDownload,
 	disabledDelete,
 	onChangeUpload,
@@ -22,7 +25,8 @@ export function ControlMenu({
 }: ControlMenuProps) {
 	return (
 		<FlexBox>
-			<FileMenuButton startIcon={<AddIcon />}>
+			<CreateFolderDialog location={location} />
+			<FileMenuButton>
 				<input
 					type={'file'}
 					id={'upload-file-btn'}
@@ -30,17 +34,19 @@ export function ControlMenu({
 					multiple={true}
 					onChange={onChangeUpload}
 				/>
-				<label htmlFor={'upload-file-btn'}>Upload</label>
+				<label htmlFor={'upload-file-btn'}>
+					<UploadRoundedIcon />
+				</label>
 			</FileMenuButton>
-			<FileMenuButton
-				startIcon={<DownloadIcon />}
-				onClick={onClickDownload}
-				disabled={disabledDownload}
-			>
-				Save
+			<FileMenuButton onClick={onClickDownload} disabled={disabledDownload}>
+				<div>
+					<DownloadRoundedIcon />
+				</div>
 			</FileMenuButton>
-			<FileMenuButton startIcon={<DeleteIcon />} onClick={onClickDelete} disabled={disabledDelete}>
-				Delete
+			<FileMenuButton onClick={onClickDelete} disabled={disabledDelete}>
+				<div>
+					<DeleteRoundedIcon />
+				</div>
 			</FileMenuButton>
 		</FlexBox>
 	);

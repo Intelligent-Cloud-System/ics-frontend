@@ -11,7 +11,6 @@ export const FileIcon = styled(InsertDriveFileIcon)`
 `;
 
 export const FileCard = styled(Card)`
-	display: inline-block;
 	background: transparent;
 	box-shadow: none;
 	position: relative;

@@ -16,6 +16,6 @@ export const FilesContainer = styled(Box)`
 	overflow-x: hidden;
 	border: solid 2px #e0e0e0;
 	border-radius: 1rem;
-	height: 70vh;
+	height: 75vh;
 	margin: 1rem 2rem 2rem;
 `;
