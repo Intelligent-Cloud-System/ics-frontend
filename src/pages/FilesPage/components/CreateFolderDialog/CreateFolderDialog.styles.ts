@@ -3,10 +3,10 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
-import Button from '@mui/material/Button';
 
 export const DialogAppBar = styled(AppBar)`
 	position: relative;
+	background-color: ${({ theme }) => theme.palette.grey[300]};
 `;
 
 export const DialogToolbar = styled(Toolbar)`
@@ -19,7 +19,6 @@ export const FixedSizeDialog = styled(Dialog).attrs({
 })``;
 
 export const DialogMenuButton = styled(IconButton)`
-	background-color: #ffffff;
-	color: #512da8;
+	color: ${({ theme }) => theme.palette.primary.main};
 	font-size: 1rem;
 `;

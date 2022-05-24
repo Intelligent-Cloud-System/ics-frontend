@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 export const UHeader = styled(Typography).attrs({
 	variant: 'h6',
 })`
-	color: #636363;
+	color: ${({ theme }) => theme.palette.grey['A700']};
 	margin-left: 1rem;
 	font-family: sans-serif;
 `;
@@ -15,7 +15,7 @@ export const FakeLink = styled(Box).attrs({
 })`
 	cursor: pointer;
 	&: hover {
-		color: #512da8;
+		color: ${({ theme }) => theme.palette.primary.main};
 		text-decoration: underline;
 	}
 `;
@@ -23,5 +23,5 @@ export const FakeLink = styled(Box).attrs({
 export const NotActiveLink = styled(Box).attrs({
 	component: 'span',
 })`
-	font-weight: 600;
+	font-weight: ${({ theme }) => theme.typography.fontWeightBold};
 `;

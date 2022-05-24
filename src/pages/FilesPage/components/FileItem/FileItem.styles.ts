@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 
 export const FileIcon = styled(InsertDriveFileIcon)`
 	font-size: 90px;
-	color: #6e52b3;
+	color: ${({ theme }) => theme.palette.primary.main};
 	margin-bottom: 6px;
 `;
 

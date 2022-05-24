@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 
 export const FolderItemIcon = styled(FolderIcon)`
 	font-size: 6.25rem;
-	color: #6e52b3;
+	color: ${({ theme }) => theme.palette.primary.main};
 	margin-bottom: -0.625rem;
 `;
 
@@ -23,7 +23,7 @@ export const FolderItemCheckbox = styled(Checkbox).attrs({
 	top: 1.6rem;
 	right: 0.6rem;
 	padding: 0;
-	color: #ffffff !important;
+	color: ${({ theme }) => theme.palette.grey[50]} !important;
 `;
 
 export const FolderItemContainer = styled(Box)`

@@ -11,11 +11,11 @@ export const FilesGridContainer = styled(Grid).attrs({
 `;
 
 export const FilesContainer = styled(Box)`
-	background-color: #e0e0e0;
+	background-color: ${({ theme }) => theme.palette.grey[500]};
 	overflow-y: scroll;
 	overflow-x: hidden;
-	border: solid 2px #e0e0e0;
+	border: solid 2px ${({ theme }) => theme.palette.grey[300]};
 	border-radius: 1rem;
-	height: 75vh;
+	height: 80vh;
 	margin: 1rem 2rem 2rem;
 `;

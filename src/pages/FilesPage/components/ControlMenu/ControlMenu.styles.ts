@@ -3,8 +3,7 @@ import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
 
 export const FileMenuButton = styled(IconButton)`
-	background-color: #ffffff;
-	color: #512da8;
+	color: ${({ theme }) => theme.palette.primary.main};
 	font-size: 1rem;
 `;
 

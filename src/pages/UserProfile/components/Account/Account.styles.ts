@@ -18,12 +18,12 @@ export const FlexBoxColumn = styled(Box)`
 `;
 
 export const AccountButton = styled(Button)`
-	background-color: #ffffff;
-	color: #512da8;
+	background-color: ${({ theme }) => theme.palette.grey[800]};
+	color: ${({ theme }) => theme.palette.primary.main};
 `;
 
 export const UCard = styled(Card)`
-	background-color: #fcfcfc;
+	background-color: ${({ theme }) => theme.palette.grey[800]};
 	min-width: 20em;
 	margin-right: 2rem;
 `;

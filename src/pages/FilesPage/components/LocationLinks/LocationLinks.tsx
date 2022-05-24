@@ -16,7 +16,11 @@ export function LocationLinks({ location, setLocation }: LocationLinksProps) {
 	return (
 		<UHeader>
 			<span> / </span>
-			<FakeLink onClick={() => setLocation('')}>home</FakeLink>
+			{location.length ? (
+				<FakeLink onClick={() => setLocation('')}>home</FakeLink>
+			) : (
+				<NotActiveLink>home</NotActiveLink>
+			)}
 			<span> / </span>
 			{folders.map((folder, index) => (
 				<span key={index}>
