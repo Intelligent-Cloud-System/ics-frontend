@@ -48,8 +48,8 @@ export function FileItem({
 				{file.isLoading && <LinearProgress />}
 				{displayCheckbox && <CardCheckbox checked={!!checked} disabled={isCheckDisabled} />}
 				<FileIcon fontSize='large' sx={{ mr: 1 }} />
-				<Typography>{renderLongName(`${file.basename} (${fileSize})`)}</Typography>
 			</FileCard>
+			<Typography>{renderLongName(`${file.basename} (${fileSize})`)}</Typography>
 		</FileItemContainer>
 	);
 }

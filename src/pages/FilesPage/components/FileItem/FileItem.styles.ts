@@ -5,16 +5,15 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import Box from '@mui/material/Box';
 
 export const FileIcon = styled(InsertDriveFileIcon)`
-	font-size: 90px;
+	font-size: 5.625rem;
 	color: ${({ theme }) => theme.palette.primary.main};
-	margin-bottom: 6px;
+	margin-bottom: 1px;
 `;
 
 export const FileCard = styled(Card)`
 	background: transparent;
 	box-shadow: none;
 	position: relative;
-	color: ${({ theme }) => theme.palette.text.primary};
 `;
 
 export const CardCheckbox = styled(Checkbox).attrs({
@@ -28,5 +27,9 @@ export const CardCheckbox = styled(Checkbox).attrs({
 `;
 
 export const FileItemContainer = styled(Box)`
-	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	cursor: pointer;
+	color: ${({ theme }) => theme.palette.text.primary};
 `;

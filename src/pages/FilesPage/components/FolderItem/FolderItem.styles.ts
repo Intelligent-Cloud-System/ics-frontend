@@ -7,13 +7,14 @@ import Box from '@mui/material/Box';
 export const FolderItemIcon = styled(FolderIcon)`
 	font-size: 6.25rem;
 	color: ${({ theme }) => theme.palette.primary.main};
-	margin-bottom: -0.625rem;
+	margin-bottom: -10px;
 `;
 
 export const FolderItemCard = styled(Card)`
 	background: transparent;
 	box-shadow: none;
 	position: relative;
+	max-width: 6.25rem;
 `;
 
 export const FolderItemCheckbox = styled(Checkbox).attrs({
@@ -27,7 +28,9 @@ export const FolderItemCheckbox = styled(Checkbox).attrs({
 `;
 
 export const FolderItemContainer = styled(Box)`
-	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	cursor: pointer;
 	color: ${({ theme }) => theme.palette.text.primary};
 `;
