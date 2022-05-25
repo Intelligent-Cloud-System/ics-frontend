@@ -18,6 +18,7 @@ import { FolderItem } from './components/FolderItem';
 import { ControlMenu } from './components/ControlMenu';
 import { LocationLinks } from './components/LocationLinks';
 import { uploadFileToS3 } from 'shared/fileUploadUtil';
+import theme from 'themes/theme';
 
 function FilesPage() {
 	const queryClient = useQueryClient();
@@ -87,7 +88,12 @@ function FilesPage() {
 		},
 	);
 
-	const onDrop = useCallback(() => {}, []);
+	const onDrop = useCallback(
+		(acceptedFiles: File[]) => {
+			uploadFiles(acceptedFiles);
+		},
+		[uploadFiles],
+	);
 
 	const { getRootProps, isDragActive } = useDropzone({ onDrop });
 
@@ -125,7 +131,10 @@ function FilesPage() {
 				<Divider orientation='horizontal' variant='middle' />
 				<LocationLinks location={currentLocation} setLocation={setCurrentLocation} />
 				<Divider orientation='horizontal' variant='middle' />
-				<FilesContainer {...getRootProps()} style={isDragActive ? { borderColor: '#512da8' } : {}}>
+				<FilesContainer
+					{...getRootProps()}
+					style={isDragActive ? { borderColor: theme.palette.primary.main } : {}}
+				>
 					<FilesGridContainer>
 						{isLoading && <LinearProgress />}
 						{folders &&
@@ -145,8 +154,8 @@ function FilesPage() {
 									<Grid item key={`${file.path}`}>
 										<FileItem
 											file={file}
-											displayCheckbox={!!checkedItems.length}
 											checked={!!file.path && checkedItems.includes(file.path)}
+											displayCheckbox={!!checkedItems.length}
 											setChecked={setCheckedItems}
 										/>
 									</Grid>

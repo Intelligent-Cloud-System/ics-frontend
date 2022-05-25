@@ -43,7 +43,7 @@ export function FileItem({ file, checked, setChecked, displayCheckbox }: FileIte
 			<FileCard onClick={handleClick}>
 				{file.isLoading && <CustomLinearProgress />}
 				{displayCheckbox && <CardCheckbox checked={!!checked} disabled={isCheckDisabled} />}
-				<FileIcon fontSize='large' sx={{ mr: 1 }} />
+				<FileIcon />
 			</FileCard>
 			<Typography>{renderLongName(`${file.basename} (${fileSize})`)}</Typography>
 		</FileItemContainer>
