@@ -13,24 +13,15 @@ import { getBasename } from 'shared/util';
 export interface FolderItemProps {
 	folder: FolderResponse;
 	checked?: boolean;
-	isCheckedFile: boolean;
 	setChecked: React.Dispatch<React.SetStateAction<string[]>>;
 	setLocation: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export function FolderItem({
-	folder,
-	checked,
-	isCheckedFile,
-	setChecked,
-	setLocation,
-}: FolderItemProps) {
+export function FolderItem({ folder, checked, setChecked, setLocation }: FolderItemProps) {
 	const handleClick = () => {
-		if (!folder.path || isCheckedFile) return;
+		if (!folder.path) return;
 		if (checked) {
-			setChecked(ids => {
-				return ids.filter(basename => basename !== folder.path);
-			});
+			setChecked(prev => prev.filter(basename => basename !== folder.path));
 		} else {
 			setChecked(checked => [...checked, folder.path]);
 		}

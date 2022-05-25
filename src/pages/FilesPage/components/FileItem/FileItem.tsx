@@ -8,7 +8,7 @@ import { FileResponse } from 'clients/CoreService';
 import { CardCheckbox, FileCard, FileIcon, FileItemContainer } from './FileItem.styles';
 import { renderLongName } from '../renderers/renderLongName';
 
-export type FileInfo = Pick<FileResponse, 'basename' | 'size' | 'lastModifiedAt'> & {
+export type FileInfo = Pick<FileResponse, 'basename' | 'size' | 'lastModifiedAt' | 'path'> & {
 	isLoading?: boolean;
 };
 
@@ -16,27 +16,18 @@ export interface FileItemProps {
 	file: FileInfo;
 	displayCheckbox: boolean;
 	checked?: boolean;
-	isCheckedFolder: boolean;
 	setChecked: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-export function FileItem({
-	file,
-	checked,
-	setChecked,
-	displayCheckbox,
-	isCheckedFolder,
-}: FileItemProps) {
+export function FileItem({ file, checked, setChecked, displayCheckbox }: FileItemProps) {
 	const isCheckDisabled = file.isLoading || !file.basename;
 
 	const handleClick = () => {
-		if (isCheckDisabled || !file.basename || isCheckedFolder) return;
+		if (isCheckDisabled || !file.path) return;
 		if (checked) {
-			setChecked(ids => {
-				return ids.filter(basename => basename !== file.basename);
-			});
+			setChecked(prev => prev.filter(path => path !== file.path));
 		} else {
-			setChecked(basenames => [...basenames, file.basename]);
+			setChecked(pathes => [...pathes, file.path]);
 		}
 	};
 

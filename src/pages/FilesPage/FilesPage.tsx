@@ -21,8 +21,7 @@ import { LocationLinks } from './components/LocationLinks';
 function FilesPage() {
 	const [currentLocation, setCurrentLocation] = useState<string>('');
 	const [processingFiles, setProcessingFiles] = useState<Array<FileInfo>>([]);
-	const [checkedFolders, setCheckedFolders] = useState<Array<string>>([]);
-	const [checkedFiles, setCheckedFiles] = useState<Array<string>>([]);
+	const [checkedItems, setCheckedItems] = useState<Array<string>>([]);
 
 	const { data: existingContent, isLoading: isContentLoading } = useQuery(
 		[entities.file, currentLocation],
@@ -46,8 +45,7 @@ function FilesPage() {
 	const isLoading = useMemo(() => isContentLoading, [isContentLoading]);
 
 	useEffect(() => {
-		setCheckedFolders([]);
-		setCheckedFiles([]);
+		setCheckedItems([]);
 	}, [currentLocation]);
 
 	return (
@@ -55,8 +53,10 @@ function FilesPage() {
 			<Container maxWidth={false}>
 				<ControlMenu
 					location={currentLocation}
-					disabledDownload={!(checkedFiles.length === 1)}
-					disabledDelete={checkedFiles.length === 0 && checkedFolders.length === 0}
+					disabledDownload={
+						checkedItems.length !== 1 || checkedItems.some(item => item.endsWith('/'))
+					}
+					disabledDelete={checkedItems.length === 0 && checkedItems.length === 0}
 					onChangeUpload={(event: ChangeEvent<HTMLInputElement>) => {}}
 					onClickDownload={() => {}}
 					onClickDelete={() => {}}
@@ -72,9 +72,8 @@ function FilesPage() {
 								<Grid item key={`${folder.path}`}>
 									<FolderItem
 										folder={folder}
-										checked={!!folder.path && checkedFolders.includes(folder.path)}
-										isCheckedFile={!!checkedFiles.length}
-										setChecked={setCheckedFolders}
+										checked={!!folder.path && checkedItems.includes(folder.path)}
+										setChecked={setCheckedItems}
 										setLocation={setCurrentLocation}
 									/>
 								</Grid>
@@ -82,13 +81,12 @@ function FilesPage() {
 						{files &&
 							files.map(file => {
 								return (
-									<Grid item key={`${file.basename}-${file.lastModifiedAt}`}>
+									<Grid item key={`${file.path}-${file.lastModifiedAt}`}>
 										<FileItem
 											file={file}
-											displayCheckbox={!!checkedFiles.length && !checkedFolders.length}
-											isCheckedFolder={!!checkedFolders.length}
-											checked={!!file.basename && checkedFiles.includes(file.basename)}
-											setChecked={setCheckedFiles}
+											displayCheckbox={!!checkedItems.length}
+											checked={!!file.path && checkedItems.includes(file.path)}
+											setChecked={setCheckedItems}
 										/>
 									</Grid>
 								);
