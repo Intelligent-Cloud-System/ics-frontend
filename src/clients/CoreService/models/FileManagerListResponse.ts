@@ -5,7 +5,7 @@
 import type { FileResponse } from './FileResponse';
 import type { FolderResponse } from './FolderResponse';
 
-export type ListResponse = {
+export type FileManagerListResponse = {
     folders: Array<FolderResponse>;
     files: Array<FileResponse>;
 }

@@ -10,7 +10,7 @@ import { FilesContainer, FilesGridContainer } from './FilePage.styles';
 
 // helpers
 import { FileItem } from './components/FileItem';
-import { FileManagerService, ListResponse } from 'clients/CoreService';
+import { FileManagerService } from 'clients/CoreService';
 import { useSnackbarOnError } from 'hooks/notification/useSnackbarOnError';
 import { entities } from 'consts/entities';
 import { FileInfo } from './components/FileItem/FileItem';

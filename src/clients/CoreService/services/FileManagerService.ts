@@ -2,8 +2,11 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateFolderRequest } from '../models/CreateFolderRequest';
+import type { FileManagerDeleteRequest } from '../models/FileManagerDeleteRequest';
+import type { FileManagerListResponse } from '../models/FileManagerListResponse';
 import type { FolderResponse } from '../models/FolderResponse';
-import type { ListResponse } from '../models/ListResponse';
+import type { SignedPostUrlsResponse } from '../models/SignedPostUrlsResponse';
+import type { UploadFileRequest } from '../models/UploadFileRequest';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 
@@ -11,12 +14,12 @@ export class FileManagerService {
 
     /**
      * @param location
-     * @returns ListResponse
+     * @returns FileManagerListResponse
      * @throws ApiError
      */
     public static list(
         location: string,
-    ): CancelablePromise<ListResponse> {
+    ): CancelablePromise<FileManagerListResponse> {
         return __request({
             method: 'GET',
             path: `/file_manager/all`,
@@ -37,6 +40,38 @@ export class FileManagerService {
         return __request({
             method: 'POST',
             path: `/file_manager/folder/create`,
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * @param requestBody
+     * @returns FileManagerListResponse
+     * @throws ApiError
+     */
+    public static delete(
+        requestBody: FileManagerDeleteRequest,
+    ): CancelablePromise<FileManagerListResponse> {
+        return __request({
+            method: 'POST',
+            path: `/file_manager/files/delete`,
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * @param requestBody
+     * @returns SignedPostUrlsResponse
+     * @throws ApiError
+     */
+    public static getSignedPostUrls(
+        requestBody: UploadFileRequest,
+    ): CancelablePromise<SignedPostUrlsResponse> {
+        return __request({
+            method: 'POST',
+            path: `/file_manager/signed-urls/post`,
             body: requestBody,
             mediaType: 'application/json',
         });
