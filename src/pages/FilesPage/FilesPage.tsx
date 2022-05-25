@@ -19,6 +19,7 @@ import { ControlMenu } from './components/ControlMenu';
 import { LocationLinks } from './components/LocationLinks';
 
 function FilesPage() {
+	const queryClient = useQueryClient();
 	const [currentLocation, setCurrentLocation] = useState<string>('');
 	const [processingFiles, setProcessingFiles] = useState<Array<FileInfo>>([]);
 	const [checkedItems, setCheckedItems] = useState<Array<string>>([]);
@@ -28,6 +29,20 @@ function FilesPage() {
 		() => FileManagerService.list(currentLocation),
 		{
 			onError: useSnackbarOnError(),
+		},
+	);
+
+	const { mutate: deleteFiles, isLoading: isDeleteLoading } = useMutation(
+		[entities.file],
+		(items: Array<string>) => {
+			return FileManagerService.delete({ paths: items });
+		},
+		{
+			onError: useSnackbarOnError(),
+			onSettled: () => {
+				queryClient.invalidateQueries(entities.file);
+				setCheckedItems([]);
+			},
 		},
 	);
 
@@ -42,7 +57,10 @@ function FilesPage() {
 
 	const folders = useMemo(() => [...(existingContent?.folders || [])], [existingContent]);
 
-	const isLoading = useMemo(() => isContentLoading, [isContentLoading]);
+	const isLoading = useMemo(
+		() => isContentLoading || isDeleteLoading,
+		[isContentLoading, isDeleteLoading],
+	);
 
 	useEffect(() => {
 		setCheckedItems([]);
@@ -59,7 +77,7 @@ function FilesPage() {
 					disabledDelete={checkedItems.length === 0 && checkedItems.length === 0}
 					onChangeUpload={(event: ChangeEvent<HTMLInputElement>) => {}}
 					onClickDownload={() => {}}
-					onClickDelete={() => {}}
+					onClickDelete={() => deleteFiles(checkedItems)}
 				/>
 				<Divider orientation='horizontal' variant='middle' />
 				<LocationLinks location={currentLocation} setLocation={setCurrentLocation} />

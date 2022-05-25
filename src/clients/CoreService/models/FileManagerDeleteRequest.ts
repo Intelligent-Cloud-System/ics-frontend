@@ -3,5 +3,5 @@
 /* eslint-disable */
 
 export type FileManagerDeleteRequest = {
-    paths: Array<any[]>;
+    paths: Array<string>;
 }
