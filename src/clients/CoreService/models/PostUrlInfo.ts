@@ -6,5 +6,5 @@ export type PostUrlInfo = {
     path: string;
     key: string;
     url: string;
-    fields: any;
+    fields: Record<string, string>;
 }

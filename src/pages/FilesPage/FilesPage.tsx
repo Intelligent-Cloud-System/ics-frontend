@@ -10,13 +10,14 @@ import { FilesContainer, FilesGridContainer } from './FilePage.styles';
 
 // helpers
 import { FileItem } from './components/FileItem';
-import { FileManagerService } from 'clients/CoreService';
+import { FileManagerService, PostUrlInfo } from 'clients/CoreService';
 import { useSnackbarOnError } from 'hooks/notification/useSnackbarOnError';
 import { entities } from 'consts/entities';
 import { FileInfo } from './components/FileItem/FileItem';
 import { FolderItem } from './components/FolderItem';
 import { ControlMenu } from './components/ControlMenu';
 import { LocationLinks } from './components/LocationLinks';
+import { uploadFileToS3 } from 'shared/fileUploadUtil';
 
 function FilesPage() {
 	const queryClient = useQueryClient();
@@ -29,6 +30,46 @@ function FilesPage() {
 		() => FileManagerService.list(currentLocation),
 		{
 			onError: useSnackbarOnError(),
+		},
+	);
+
+	const { mutate: uploadFiles } = useMutation(
+		[entities.file],
+		async (files: Array<File>) => {
+			const { urls } = await FileManagerService.getSignedPostUrls({
+				location: currentLocation,
+				fileInfos: files.map(({ name, size }) => ({ name, size })),
+			});
+
+			return Promise.all(
+				urls.map((postUrl: PostUrlInfo) => {
+					const fileName = postUrl.path.split('/').pop();
+					const file = files.find(file => file.name === fileName);
+					if (!file) throw new Error('Bad link generation');
+					return uploadFileToS3(postUrl, file).then(() => {
+						setProcessingFiles(processingFiles =>
+							processingFiles?.filter(processedFile => processedFile.basename !== file.name),
+						);
+					});
+				}),
+			);
+		},
+		{
+			onError: useSnackbarOnError(),
+			onSuccess: () => queryClient.invalidateQueries(entities.file),
+			onMutate: (files: File[]) => {
+				setProcessingFiles(processingFiles => {
+					return [
+						...processingFiles,
+						...files.map(file => ({
+							basename: file.name,
+							size: file.size,
+							path: `${currentLocation}/${file.name}`,
+							isLoading: true,
+						})),
+					];
+				});
+			},
 		},
 	);
 
@@ -75,7 +116,9 @@ function FilesPage() {
 						checkedItems.length !== 1 || checkedItems.some(item => item.endsWith('/'))
 					}
 					disabledDelete={checkedItems.length === 0 && checkedItems.length === 0}
-					onChangeUpload={(event: ChangeEvent<HTMLInputElement>) => {}}
+					onChangeUpload={(event: ChangeEvent<HTMLInputElement>) => {
+						uploadFiles(Array.from(event.target.files || []));
+					}}
 					onClickDownload={() => {}}
 					onClickDelete={() => deleteFiles(checkedItems)}
 				/>
@@ -99,7 +142,7 @@ function FilesPage() {
 						{files &&
 							files.map(file => {
 								return (
-									<Grid item key={`${file.path}-${file.lastModifiedAt}`}>
+									<Grid item key={`${file.path}`}>
 										<FileItem
 											file={file}
 											displayCheckbox={!!checkedItems.length}

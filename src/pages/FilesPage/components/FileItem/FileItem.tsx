@@ -1,14 +1,19 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
-import LinearProgress from '@mui/material/LinearProgress';
 
 import { bytesToSize } from 'shared/bytes-size';
 
 import { FileResponse } from 'clients/CoreService';
-import { CardCheckbox, FileCard, FileIcon, FileItemContainer } from './FileItem.styles';
+import {
+	CardCheckbox,
+	CustomLinearProgress,
+	FileCard,
+	FileIcon,
+	FileItemContainer,
+} from './FileItem.styles';
 import { renderLongName } from '../renderers/renderLongName';
 
-export type FileInfo = Pick<FileResponse, 'basename' | 'size' | 'lastModifiedAt' | 'path'> & {
+export type FileInfo = Pick<FileResponse, 'basename' | 'size' | 'path'> & {
 	isLoading?: boolean;
 };
 
@@ -36,7 +41,7 @@ export function FileItem({ file, checked, setChecked, displayCheckbox }: FileIte
 	return (
 		<FileItemContainer>
 			<FileCard onClick={handleClick}>
-				{file.isLoading && <LinearProgress />}
+				{file.isLoading && <CustomLinearProgress />}
 				{displayCheckbox && <CardCheckbox checked={!!checked} disabled={isCheckDisabled} />}
 				<FileIcon fontSize='large' sx={{ mr: 1 }} />
 			</FileCard>
