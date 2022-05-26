@@ -1,8 +1,7 @@
-import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import LinearProgress from '@mui/material/LinearProgress';
 
@@ -138,9 +137,7 @@ function FilesPage() {
 				onClickDownload={() => downloadFile(checkedItems)}
 				onClickDelete={() => deleteFiles(checkedItems)}
 			/>
-			<Divider orientation='horizontal' variant='middle' />
 			<LocationLinks location={currentLocation} setLocation={setCurrentLocation} />
-			<Divider orientation='horizontal' variant='middle' />
 			<FilesContainer
 				{...getRootProps()}
 				style={isDragActive ? { borderColor: theme.palette.primary.main } : {}}

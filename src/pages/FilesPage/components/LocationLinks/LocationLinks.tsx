@@ -1,5 +1,5 @@
 import React from 'react';
-import { FakeLink, UHeader, NotActiveLink } from './LocationLinks.styles';
+import { FakeLink, UHeader, NotActiveLink, HorizontalMiddleDivider } from './LocationLinks.styles';
 
 export interface LocationLinksProps {
 	location: string;
@@ -14,24 +14,28 @@ export function LocationLinks({ location, setLocation }: LocationLinksProps) {
 		setLocation(folders.slice(0, index + 1).join('/'));
 
 	return (
-		<UHeader>
-			<span> / </span>
-			{location.length ? (
-				<FakeLink onClick={() => setLocation('')}>home</FakeLink>
-			) : (
-				<NotActiveLink>home</NotActiveLink>
-			)}
-			<span> / </span>
-			{folders.map((folder, index) => (
-				<span key={index}>
-					{index === last ? (
-						<NotActiveLink>{folder}</NotActiveLink>
-					) : (
-						<FakeLink onClick={() => updateLocationForIndex(index)}>{folder}</FakeLink>
-					)}
-					<span> / </span>
-				</span>
-			))}
-		</UHeader>
+		<>
+			<HorizontalMiddleDivider />
+			<UHeader>
+				<span> / </span>
+				{location.length ? (
+					<FakeLink onClick={() => setLocation('')}>home</FakeLink>
+				) : (
+					<NotActiveLink>home</NotActiveLink>
+				)}
+				<span> / </span>
+				{folders.map((folder, index) => (
+					<span key={index}>
+						{index === last ? (
+							<NotActiveLink>{folder}</NotActiveLink>
+						) : (
+							<FakeLink onClick={() => updateLocationForIndex(index)}>{folder}</FakeLink>
+						)}
+						<span> / </span>
+					</span>
+				))}
+			</UHeader>
+			<HorizontalMiddleDivider />
+		</>
 	);
 }

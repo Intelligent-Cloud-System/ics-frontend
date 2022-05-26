@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
 
 export const UHeader = styled(Typography).attrs({
 	variant: 'h6',
@@ -25,3 +26,8 @@ export const NotActiveLink = styled(Box).attrs({
 })`
 	font-weight: ${({ theme }) => theme.typography.fontWeightBold};
 `;
+
+export const HorizontalMiddleDivider = styled(Divider).attrs({
+	orientation: 'horizontal',
+	variant: 'middle',
+})``;
