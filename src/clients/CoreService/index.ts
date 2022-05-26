@@ -6,12 +6,15 @@ export { CancelablePromise } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 
 export type { CreateFolderRequest } from './models/CreateFolderRequest';
+export type { DownloadFileRequest } from './models/DownloadFileRequest';
 export type { FileManagerDeleteRequest } from './models/FileManagerDeleteRequest';
 export type { FileManagerListResponse } from './models/FileManagerListResponse';
 export type { FileResponse } from './models/FileResponse';
 export type { FolderResponse } from './models/FolderResponse';
+export type { GetUrlInfo } from './models/GetUrlInfo';
 export type { PostUrlInfo } from './models/PostUrlInfo';
 export type { RegisterUserRequest } from './models/RegisterUserRequest';
+export type { SignedGetUrlsResponse } from './models/SignedGetUrlsResponse';
 export type { SignedPostUrlsResponse } from './models/SignedPostUrlsResponse';
 export type { UploadFileRequest } from './models/UploadFileRequest';
 export type { UploadSingleFileInfo } from './models/UploadSingleFileInfo';

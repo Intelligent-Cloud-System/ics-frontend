@@ -2,9 +2,11 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateFolderRequest } from '../models/CreateFolderRequest';
+import type { DownloadFileRequest } from '../models/DownloadFileRequest';
 import type { FileManagerDeleteRequest } from '../models/FileManagerDeleteRequest';
 import type { FileManagerListResponse } from '../models/FileManagerListResponse';
 import type { FolderResponse } from '../models/FolderResponse';
+import type { SignedGetUrlsResponse } from '../models/SignedGetUrlsResponse';
 import type { SignedPostUrlsResponse } from '../models/SignedPostUrlsResponse';
 import type { UploadFileRequest } from '../models/UploadFileRequest';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -72,6 +74,22 @@ export class FileManagerService {
         return __request({
             method: 'POST',
             path: `/file_manager/signed-urls/post`,
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * @param requestBody
+     * @returns SignedGetUrlsResponse
+     * @throws ApiError
+     */
+    public static getSignedGetUrls(
+        requestBody: DownloadFileRequest,
+    ): CancelablePromise<SignedGetUrlsResponse> {
+        return __request({
+            method: 'POST',
+            path: `/file_manager/signed-urls/get`,
             body: requestBody,
             mediaType: 'application/json',
         });
