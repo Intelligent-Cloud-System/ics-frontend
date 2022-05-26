@@ -130,57 +130,51 @@ function FilesPage() {
 	}, [currentLocation]);
 
 	return (
-		<>
-			<Container maxWidth={false}>
-				<ControlMenu
-					location={currentLocation}
-					disabledDownload={
-						checkedItems.length !== 1 || checkedItems.some(item => item.endsWith('/'))
-					}
-					disabledDelete={checkedItems.length === 0}
-					onChangeUpload={(event: ChangeEvent<HTMLInputElement>) =>
-						uploadFiles(Array.from(event.target.files || []))
-					}
-					onClickDownload={() => downloadFile(checkedItems)}
-					onClickDelete={() => deleteFiles(checkedItems)}
-				/>
-				<Divider orientation='horizontal' variant='middle' />
-				<LocationLinks location={currentLocation} setLocation={setCurrentLocation} />
-				<Divider orientation='horizontal' variant='middle' />
-				<FilesContainer
-					{...getRootProps()}
-					style={isDragActive ? { borderColor: theme.palette.primary.main } : {}}
-				>
-					<FilesGridContainer>
-						{isLoading && <LinearProgress />}
-						{folders &&
-							folders.map(folder => (
-								<Grid item key={`${folder.path}`}>
-									<FolderItem
-										folder={folder}
-										checked={!!folder.path && checkedItems.includes(folder.path)}
+		<Container maxWidth={false}>
+			<ControlMenu
+				location={currentLocation}
+				disabledDownload={checkedItems.length !== 1 || checkedItems.some(i => i.endsWith('/'))}
+				disabledDelete={checkedItems.length === 0}
+				onChangeUpload={event => uploadFiles(Array.from(event.target.files || []))}
+				onClickDownload={() => downloadFile(checkedItems)}
+				onClickDelete={() => deleteFiles(checkedItems)}
+			/>
+			<Divider orientation='horizontal' variant='middle' />
+			<LocationLinks location={currentLocation} setLocation={setCurrentLocation} />
+			<Divider orientation='horizontal' variant='middle' />
+			<FilesContainer
+				{...getRootProps()}
+				style={isDragActive ? { borderColor: theme.palette.primary.main } : {}}
+			>
+				<FilesGridContainer>
+					{isLoading && <LinearProgress />}
+					{folders &&
+						folders.map(folder => (
+							<Grid item key={`${folder.path}`}>
+								<FolderItem
+									folder={folder}
+									checked={!!folder.path && checkedItems.includes(folder.path)}
+									setChecked={setCheckedItems}
+									setLocation={setCurrentLocation}
+								/>
+							</Grid>
+						))}
+					{files &&
+						files.map(file => {
+							return (
+								<Grid item key={`${file.path}`}>
+									<FileItem
+										file={file}
+										checked={!!file.path && checkedItems.includes(file.path)}
+										displayCheckbox={!!checkedItems.length}
 										setChecked={setCheckedItems}
-										setLocation={setCurrentLocation}
 									/>
 								</Grid>
-							))}
-						{files &&
-							files.map(file => {
-								return (
-									<Grid item key={`${file.path}`}>
-										<FileItem
-											file={file}
-											checked={!!file.path && checkedItems.includes(file.path)}
-											displayCheckbox={!!checkedItems.length}
-											setChecked={setCheckedItems}
-										/>
-									</Grid>
-								);
-							})}
-					</FilesGridContainer>
-				</FilesContainer>
-			</Container>
-		</>
+							);
+						})}
+				</FilesGridContainer>
+			</FilesContainer>
+		</Container>
 	);
 }
 
