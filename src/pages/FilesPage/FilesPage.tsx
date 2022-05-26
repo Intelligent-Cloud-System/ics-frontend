@@ -6,6 +6,7 @@ import Grid from '@mui/material/Grid';
 import LinearProgress from '@mui/material/LinearProgress';
 
 import { FilesContainer, FilesGridContainer } from './FilePage.styles';
+import theme from 'themes/theme';
 
 // helpers
 import { FileItem } from './components/FileItem';
@@ -18,7 +19,6 @@ import { ControlMenu } from './components/ControlMenu';
 import { LocationLinks } from './components/LocationLinks';
 import { uploadFileToS3 } from 'shared/fileUploadUtil';
 import { downloadFilesByLink } from './components/utils/downloadFilesByLink';
-import theme from 'themes/theme';
 import { getBasename } from 'shared/util';
 
 function FilesPage() {
@@ -146,7 +146,7 @@ function FilesPage() {
 					{isLoading && <LinearProgress />}
 					{folders &&
 						folders.map(folder => (
-							<Grid item key={`${folder.path}`}>
+							<Grid item key={folder.path}>
 								<FolderItem
 									folder={folder}
 									checked={!!folder.path && checkedItems.includes(folder.path)}
@@ -158,7 +158,7 @@ function FilesPage() {
 					{files &&
 						files.map(file => {
 							return (
-								<Grid item key={`${file.path}`}>
+								<Grid item key={file.path}>
 									<FileItem
 										file={file}
 										checked={!!file.path && checkedItems.includes(file.path)}

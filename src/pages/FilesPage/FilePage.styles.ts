@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 
 export const FilesGridContainer = styled(Grid).attrs({
@@ -10,12 +10,11 @@ export const FilesGridContainer = styled(Grid).attrs({
 	padding: 1rem;
 `;
 
-export const FilesContainer = styled(Box)`
+export const FilesContainer = styled(Paper)`
 	background-color: ${({ theme }) => theme.palette.grey[500]};
-	overflow-y: scroll;
-	overflow-x: hidden;
 	border: solid 2px ${({ theme }) => theme.palette.grey[300]};
-	border-radius: 1rem;
+	border-top-left-radius: 1rem;
+	overflow: auto;
 	height: 80vh;
-	margin: 1rem 2rem 2rem;
+	margin: 1rem;
 `;
