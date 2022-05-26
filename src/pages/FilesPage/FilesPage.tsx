@@ -18,6 +18,7 @@ import { FolderItem } from './components/FolderItem';
 import { ControlMenu } from './components/ControlMenu';
 import { LocationLinks } from './components/LocationLinks';
 import { uploadFileToS3 } from 'shared/fileUploadUtil';
+import { downloadFilesByLink } from './components/utils/downloadFilesByLink';
 import theme from 'themes/theme';
 
 function FilesPage() {
@@ -88,6 +89,21 @@ function FilesPage() {
 		},
 	);
 
+	const { mutate: downloadFile, isLoading: isDownloadLoading } = useMutation(
+		[entities.file],
+		async (filePathes: string[]) => {
+			const request = {
+				location: currentLocation,
+				names: filePathes.map(filePath => filePath.slice(filePath.lastIndexOf('/') + 1)),
+			};
+			return FileManagerService.getSignedGetUrls(request);
+		},
+		{
+			onError: useSnackbarOnError(),
+			onSuccess: downloadFilesByLink,
+		},
+	);
+
 	const onDrop = useCallback(
 		(acceptedFiles: File[]) => {
 			uploadFiles(acceptedFiles);
@@ -105,8 +121,8 @@ function FilesPage() {
 	const folders = useMemo(() => [...(existingContent?.folders || [])], [existingContent]);
 
 	const isLoading = useMemo(
-		() => isContentLoading || isDeleteLoading,
-		[isContentLoading, isDeleteLoading],
+		() => isContentLoading || isDeleteLoading || isDownloadLoading,
+		[isContentLoading, isDeleteLoading, isDownloadLoading],
 	);
 
 	useEffect(() => {
@@ -121,11 +137,11 @@ function FilesPage() {
 					disabledDownload={
 						checkedItems.length !== 1 || checkedItems.some(item => item.endsWith('/'))
 					}
-					disabledDelete={checkedItems.length === 0 && checkedItems.length === 0}
-					onChangeUpload={(event: ChangeEvent<HTMLInputElement>) => {
-						uploadFiles(Array.from(event.target.files || []));
-					}}
-					onClickDownload={() => {}}
+					disabledDelete={checkedItems.length === 0}
+					onChangeUpload={(event: ChangeEvent<HTMLInputElement>) =>
+						uploadFiles(Array.from(event.target.files || []))
+					}
+					onClickDownload={() => downloadFile(checkedItems)}
 					onClickDelete={() => deleteFiles(checkedItems)}
 				/>
 				<Divider orientation='horizontal' variant='middle' />
