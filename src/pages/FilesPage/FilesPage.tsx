@@ -20,6 +20,7 @@ import { LocationLinks } from './components/LocationLinks';
 import { uploadFileToS3 } from 'shared/fileUploadUtil';
 import { downloadFilesByLink } from './components/utils/downloadFilesByLink';
 import theme from 'themes/theme';
+import { getBasename } from 'shared/util';
 
 function FilesPage() {
 	const queryClient = useQueryClient();
@@ -45,7 +46,7 @@ function FilesPage() {
 
 			return Promise.all(
 				urls.map((postUrl: PostUrlInfo) => {
-					const fileName = postUrl.path.split('/').pop();
+					const fileName = getBasename(postUrl.path);
 					const file = files.find(file => file.name === fileName);
 					if (!file) throw new Error('Bad link generation');
 					return uploadFileToS3(postUrl, file).then(() => {
@@ -82,8 +83,8 @@ function FilesPage() {
 		},
 		{
 			onError: useSnackbarOnError(),
+			onSuccess: () => queryClient.invalidateQueries(entities.file),
 			onSettled: () => {
-				queryClient.invalidateQueries(entities.file);
 				setCheckedItems([]);
 			},
 		},
@@ -94,7 +95,7 @@ function FilesPage() {
 		async (filePathes: string[]) => {
 			const request = {
 				location: currentLocation,
-				names: filePathes.map(filePath => filePath.slice(filePath.lastIndexOf('/') + 1)),
+				names: filePathes.map(filePath => getBasename(filePath)),
 			};
 			return FileManagerService.getSignedGetUrls(request);
 		},

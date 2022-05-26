@@ -1,4 +1,5 @@
 import { SignedGetUrlsResponse } from 'clients/CoreService';
+import { getBasename } from 'shared/util';
 
 export const downloadFilesByLink = (response: SignedGetUrlsResponse) => {
 	const { urls } = response;
@@ -7,7 +8,7 @@ export const downloadFilesByLink = (response: SignedGetUrlsResponse) => {
 
 	for (const urlInfo of urls) {
 		link.setAttribute('href', urlInfo.url);
-		link.setAttribute('download', urlInfo.path.slice(urlInfo.path.lastIndexOf('/') + 1));
+		link.setAttribute('download', getBasename(urlInfo.path));
 		link.click();
 	}
 
