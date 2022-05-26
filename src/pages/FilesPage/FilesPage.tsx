@@ -84,9 +84,7 @@ function FilesPage() {
 		{
 			onError: useSnackbarOnError(),
 			onSuccess: () => queryClient.invalidateQueries(entities.file),
-			onSettled: () => {
-				setCheckedItems([]);
-			},
+			onSettled: () => setCheckedItems([]),
 		},
 	);
 
