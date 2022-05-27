@@ -2,13 +2,13 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateFolderRequest } from '../models/CreateFolderRequest';
-import type { DownloadFileRequest } from '../models/DownloadFileRequest';
 import type { FileManagerDeleteRequest } from '../models/FileManagerDeleteRequest';
 import type { FileManagerListResponse } from '../models/FileManagerListResponse';
 import type { FolderResponse } from '../models/FolderResponse';
+import type { ReceiveUrlGetRequest } from '../models/ReceiveUrlGetRequest';
+import type { ReceiveUrlPostRequest } from '../models/ReceiveUrlPostRequest';
 import type { SignedGetUrlsResponse } from '../models/SignedGetUrlsResponse';
 import type { SignedPostUrlsResponse } from '../models/SignedPostUrlsResponse';
-import type { UploadFileRequest } from '../models/UploadFileRequest';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
 
@@ -56,7 +56,7 @@ export class FileManagerService {
         requestBody: FileManagerDeleteRequest,
     ): CancelablePromise<FileManagerListResponse> {
         return __request({
-            method: 'POST',
+            method: 'DELETE',
             path: `/file_manager/files/delete`,
             body: requestBody,
             mediaType: 'application/json',
@@ -69,7 +69,7 @@ export class FileManagerService {
      * @throws ApiError
      */
     public static getSignedPostUrls(
-        requestBody: UploadFileRequest,
+        requestBody: ReceiveUrlPostRequest,
     ): CancelablePromise<SignedPostUrlsResponse> {
         return __request({
             method: 'POST',
@@ -85,7 +85,7 @@ export class FileManagerService {
      * @throws ApiError
      */
     public static getSignedGetUrls(
-        requestBody: DownloadFileRequest,
+        requestBody: ReceiveUrlGetRequest,
     ): CancelablePromise<SignedGetUrlsResponse> {
         return __request({
             method: 'POST',

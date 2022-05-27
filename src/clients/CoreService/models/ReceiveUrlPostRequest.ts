@@ -4,7 +4,7 @@
 
 import type { UploadSingleFileInfo } from './UploadSingleFileInfo';
 
-export type UploadFileRequest = {
+export type ReceiveUrlPostRequest = {
     location: string;
     fileInfos: Array<UploadSingleFileInfo>;
 }

@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type DownloadFileRequest = {
+export type ReceiveUrlGetRequest = {
     location: string;
     names: Array<string>;
 }
