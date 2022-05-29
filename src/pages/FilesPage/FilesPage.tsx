@@ -98,7 +98,7 @@ function FilesPage() {
 		},
 		{
 			onError: useSnackbarOnError(),
-			onSuccess: downloadFilesByLink,
+			onSuccess: downloadFilesFromSignedUrls,
 		},
 	);
 
