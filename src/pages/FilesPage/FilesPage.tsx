@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 import LinearProgress from '@mui/material/LinearProgress';
 
 import { FilesContainer, FilesGridContainer } from './FilePage.styles';
-import theme from 'themes/theme';
+import theme from 'themes';
 
 // helpers
 import { FileItem } from './components/FileItem';
