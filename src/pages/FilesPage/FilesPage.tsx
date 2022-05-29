@@ -27,7 +27,7 @@ function FilesPage() {
 	const [processingFiles, setProcessingFiles] = useState<Array<FileInfo>>([]);
 	const [checkedItems, setCheckedItems] = useState<Array<string>>([]);
 
-	const { data: existingContent, isLoading: isContentLoading } = useQuery(
+	const { data: content, isLoading: isContentLoading } = useQuery(
 		[entities.file, currentLocation],
 		() => FileManagerService.list(currentLocation),
 		{
