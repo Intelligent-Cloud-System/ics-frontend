@@ -18,11 +18,12 @@ import { FolderItem } from './components/FolderItem';
 import { ControlMenu } from './components/ControlMenu';
 import { LocationLinks } from './components/LocationLinks';
 import { uploadFileToS3 } from 'shared/fileUploadUtil';
-import { downloadFilesByLink } from './components/utils/downloadFilesByLink';
+import { downloadFilesFromSignedUrls } from './components/utils/downloadFilesByLink';
 import { getBasename } from 'shared/util';
 
 function FilesPage() {
 	const queryClient = useQueryClient();
+	const onError = useSnackbarOnError();
 	const [currentLocation, setCurrentLocation] = useState<string>('');
 	const [processingFiles, setProcessingFiles] = useState<Array<FileInfo>>([]);
 	const [checkedItems, setCheckedItems] = useState<Array<string>>([]);
@@ -31,7 +32,7 @@ function FilesPage() {
 		[entities.file, currentLocation],
 		() => FileManagerService.list(currentLocation),
 		{
-			onError: useSnackbarOnError(),
+			onError,
 		},
 	);
 
@@ -47,7 +48,10 @@ function FilesPage() {
 				urls.map((postUrl: PostUrlInfo) => {
 					const fileName = getBasename(postUrl.path);
 					const file = files.find(file => file.name === fileName);
-					if (!file) throw new Error('Bad link generation');
+					if (!file) {
+						onError(new Error(`Bad link generation for file ${fileName}`));
+						return;
+					}
 					return uploadFileToS3(postUrl, file).then(() => {
 						setProcessingFiles(processingFiles =>
 							processingFiles?.filter(processedFile => processedFile.basename !== file.name),
@@ -57,7 +61,7 @@ function FilesPage() {
 			);
 		},
 		{
-			onError: useSnackbarOnError(),
+			onError,
 			onSuccess: () => queryClient.invalidateQueries(entities.file),
 			onMutate: (files: File[]) => {
 				setProcessingFiles(processingFiles => {
@@ -97,7 +101,7 @@ function FilesPage() {
 			return FileManagerService.getSignedGetUrls(request);
 		},
 		{
-			onError: useSnackbarOnError(),
+			onError,
 			onSuccess: downloadFilesFromSignedUrls,
 		},
 	);
@@ -112,11 +116,11 @@ function FilesPage() {
 	const { getRootProps, isDragActive } = useDropzone({ onDrop });
 
 	const files = useMemo(
-		() => [...(existingContent?.files || []), ...processingFiles],
-		[existingContent, processingFiles],
+		() => [...(content?.files || []), ...processingFiles],
+		[content, processingFiles],
 	);
 
-	const folders = useMemo(() => [...(existingContent?.folders || [])], [existingContent]);
+	const folders = useMemo(() => [...(content?.folders || [])], [content]);
 
 	const isLoading = useMemo(
 		() => isContentLoading || isDeleteLoading || isDownloadLoading,

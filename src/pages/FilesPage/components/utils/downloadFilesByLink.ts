@@ -1,7 +1,7 @@
 import { SignedGetUrlsResponse } from 'clients/CoreService';
 import { getBasename } from 'shared/util';
 
-export const downloadFilesByLink = (response: SignedGetUrlsResponse) => {
+export const downloadFilesFromSignedUrls = (response: SignedGetUrlsResponse) => {
 	const { urls } = response;
 	const link = document.createElement('a');
 	document.body.appendChild(link);
