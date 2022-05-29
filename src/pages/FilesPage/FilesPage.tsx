@@ -1,66 +1,78 @@
-import React, { ChangeEvent, useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import LinearProgress from '@mui/material/LinearProgress';
 
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import DownloadIcon from '@mui/icons-material/Download';
-
-import {
-	FileMenuButton,
-	FilesContainer,
-	FilesGridContainer,
-	FlexBox,
-	UHeader,
-} from './FilePage.styles';
+import { FilesContainer, FilesGridContainer } from './FilePage.styles';
+import theme from 'themes';
 
 // helpers
 import { FileItem } from './components/FileItem';
-import { FileLinkResponse, FileService } from 'clients/CoreService';
+import { FileManagerService, PostUrlInfo } from 'clients/CoreService';
 import { useSnackbarOnError } from 'hooks/notification/useSnackbarOnError';
 import { entities } from 'consts/entities';
 import { FileInfo } from './components/FileItem/FileItem';
+import { FolderItem } from './components/FolderItem';
+import { ControlMenu } from './components/ControlMenu';
+import { LocationLinks } from './components/LocationLinks';
+import { uploadFileToS3 } from 'shared/fileUploadUtil';
+import { downloadFilesFromSignedUrls } from './components/utils/downloadFilesByLink';
+import { getBasename } from 'shared/util';
 
 function FilesPage() {
-	const coreUrl: string = process.env.REACT_APP_CORE_URL || '';
 	const queryClient = useQueryClient();
+	const onError = useSnackbarOnError();
+	const [currentLocation, setCurrentLocation] = useState<string>('');
 	const [processingFiles, setProcessingFiles] = useState<Array<FileInfo>>([]);
-	const [checkedIds, setCheckedIds] = useState<Array<number>>([]);
+	const [checkedItems, setCheckedItems] = useState<Array<string>>([]);
 
-	const { data: existingFiles, isLoading: isFilesLoading } = useQuery(
-		[entities.file],
-		() => FileService.list(),
+	const { data: content, isLoading: isContentLoading } = useQuery(
+		[entities.file, currentLocation],
+		() => FileManagerService.list(currentLocation),
 		{
-			onError: useSnackbarOnError(),
+			onError,
 		},
 	);
 
 	const { mutate: uploadFiles } = useMutation(
 		[entities.file],
-		(files: Array<File>) => {
-			return Promise.all(
-				files.map(async (file: File) => {
-					await FileService.upload({ file });
+		async (files: Array<File>) => {
+			const { urls } = await FileManagerService.getSignedPostUrls({
+				location: currentLocation,
+				fileInfos: files.map(({ name, size }) => ({ name, size })),
+			});
 
-					await queryClient.invalidateQueries(entities.file);
-					setProcessingFiles(processingFiles =>
-						processingFiles?.filter(processedFile => processedFile.name !== file.name),
-					);
+			return Promise.all(
+				urls.map((postUrl: PostUrlInfo) => {
+					const fileName = getBasename(postUrl.path);
+					const file = files.find(file => file.name === fileName);
+					if (!file) {
+						onError(new Error(`Bad link generation for file ${fileName}`));
+						return;
+					}
+					return uploadFileToS3(postUrl, file).then(() => {
+						setProcessingFiles(processingFiles =>
+							processingFiles?.filter(processedFile => processedFile.basename !== file.name),
+						);
+					});
 				}),
 			);
 		},
 		{
-			onError: useSnackbarOnError(),
+			onError,
 			onSuccess: () => queryClient.invalidateQueries(entities.file),
 			onMutate: (files: File[]) => {
 				setProcessingFiles(processingFiles => {
 					return [
 						...processingFiles,
-						...files.map(file => ({ name: file.name, size: file.size, isLoading: true })),
+						...files.map(file => ({
+							basename: file.name,
+							size: file.size,
+							path: `${currentLocation}/${file.name}`,
+							isLoading: true,
+						})),
 					];
 				});
 			},
@@ -69,26 +81,28 @@ function FilesPage() {
 
 	const { mutate: deleteFiles, isLoading: isDeleteLoading } = useMutation(
 		[entities.file],
-		(ids: Array<number>) => {
-			return FileService.delete({ ids });
+		(items: Array<string>) => {
+			return FileManagerService.delete({ paths: items });
 		},
 		{
 			onError: useSnackbarOnError(),
-			onSettled: () => {
-				queryClient.invalidateQueries(entities.file);
-				setCheckedIds([]);
-			},
+			onSuccess: () => queryClient.invalidateQueries(entities.file),
+			onSettled: () => setCheckedItems([]),
 		},
 	);
 
-	const { mutate: saveFile, isLoading: isSaveLoading } = useMutation(
+	const { mutate: downloadFile, isLoading: isDownloadLoading } = useMutation(
 		[entities.file],
-		async (fileId: number) => FileService.getFileLink(fileId),
+		async (filePathes: string[]) => {
+			const request = {
+				location: currentLocation,
+				names: filePathes.map(filePath => getBasename(filePath)),
+			};
+			return FileManagerService.getSignedGetUrls(request);
+		},
 		{
-			onError: useSnackbarOnError(),
-			onSuccess: (response: FileLinkResponse) => {
-				window.open(coreUrl + response.link);
-			},
+			onError,
+			onSuccess: downloadFilesFromSignedUrls,
 		},
 	);
 
@@ -102,70 +116,65 @@ function FilesPage() {
 	const { getRootProps, isDragActive } = useDropzone({ onDrop });
 
 	const files = useMemo(
-		() => [...(existingFiles || []), ...processingFiles],
-		[existingFiles, processingFiles],
+		() => [...(content?.files || []), ...processingFiles],
+		[content, processingFiles],
 	);
+
+	const folders = useMemo(() => [...(content?.folders || [])], [content]);
 
 	const isLoading = useMemo(
-		() => isFilesLoading || isDeleteLoading || isSaveLoading,
-		[isFilesLoading, isDeleteLoading, isSaveLoading],
+		() => isContentLoading || isDeleteLoading || isDownloadLoading,
+		[isContentLoading, isDeleteLoading, isDownloadLoading],
 	);
 
+	useEffect(() => {
+		setCheckedItems([]);
+	}, [currentLocation]);
+
 	return (
-		<>
-			<Container maxWidth={false}>
-				<FlexBox>
-					<FileMenuButton startIcon={<AddIcon />}>
-						<input
-							type={'file'}
-							id={'upload-file-btn'}
-							hidden
-							multiple={true}
-							onChange={(event: ChangeEvent<HTMLInputElement>) => {
-								uploadFiles(Array.from(event.target.files || []));
-							}}
-						/>
-						<label htmlFor={'upload-file-btn'}>Upload</label>
-					</FileMenuButton>
-					<FileMenuButton
-						startIcon={<DownloadIcon />}
-						onClick={() => saveFile(checkedIds[0])}
-						disabled={!(checkedIds.length === 1)}
-					>
-						Save
-					</FileMenuButton>
-					<FileMenuButton
-						startIcon={<DeleteIcon />}
-						onClick={() => {
-							deleteFiles(checkedIds);
-						}}
-						disabled={checkedIds.length === 0}
-					>
-						Delete
-					</FileMenuButton>
-				</FlexBox>
-				<UHeader>Files</UHeader>
-				<Divider orientation='horizontal' variant='middle' />
-				<FilesContainer {...getRootProps()} style={isDragActive ? { borderColor: '#512da8' } : {}}>
-					<FilesGridContainer>
-						{isLoading && <LinearProgress />}
-						{files &&
-							files.map(file => {
-								return (
-									<Grid item key={`${file.id}-${file.name}`}>
-										<FileItem
-											file={file}
-											displayCheckbox={!!checkedIds.length}
-											checked={!!file.id && checkedIds.includes(file.id)}
-											setChecked={setCheckedIds}
-										/>
-									</Grid>
-								);
-							})}
-					</FilesGridContainer>
-				</FilesContainer>
-			</Container>
-		</>
+		<Container maxWidth={false}>
+			<ControlMenu
+				location={currentLocation}
+				disabledDownload={checkedItems.length !== 1 || checkedItems.some(i => i.endsWith('/'))}
+				disabledDelete={checkedItems.length === 0}
+				onChangeUpload={event => uploadFiles(Array.from(event.target.files || []))}
+				onClickDownload={() => downloadFile(checkedItems)}
+				onClickDelete={() => deleteFiles(checkedItems)}
+			/>
+			<LocationLinks location={currentLocation} setLocation={setCurrentLocation} />
+			<FilesContainer
+				{...getRootProps()}
+				style={isDragActive ? { borderColor: theme.palette.primary.main } : {}}
+			>
+				<FilesGridContainer>
+					{isLoading && <LinearProgress />}
+					{folders &&
+						folders.map(folder => (
+							<Grid item key={folder.path}>
+								<FolderItem
+									folder={folder}
+									checked={!!folder.path && checkedItems.includes(folder.path)}
+									setChecked={setCheckedItems}
+									setLocation={setCurrentLocation}
+								/>
+							</Grid>
+						))}
+					{files &&
+						files.map(file => {
+							return (
+								<Grid item key={file.path}>
+									<FileItem
+										file={file}
+										checked={!!file.path && checkedItems.includes(file.path)}
+										displayCheckbox={!!checkedItems.length}
+										setChecked={setCheckedItems}
+									/>
+								</Grid>
+							);
+						})}
+				</FilesGridContainer>
+			</FilesContainer>
+		</Container>
 	);
 }
 

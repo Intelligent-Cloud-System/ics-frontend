@@ -3,13 +3,10 @@ import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
-import { deepPurple } from '@mui/material/colors';
 import styled from 'styled-components';
 
-const color = deepPurple[700];
-
 export const NavToolbar = styled(Toolbar)`
-	background-color: #e0e0e0;
+	background-color: ${({ theme }) => theme.palette.grey[300]};
 `;
 
 export const FlexBox = styled(Box)`
@@ -39,12 +36,13 @@ export const PopoverButton = styled(Button).attrs({
 	variant: 'outlined',
 })`
 	margin-top: 1rem;
-	color: #512da8;
-	border-color: #512da8;
+	color: ${({ theme }) => theme.palette.primary.main};
+	border-color: ${({ theme }) => theme.palette.primary.main};
 `;
 
 export const NLink = styled(Link).attrs({
 	underline: 'hover',
 	sx: { display: 'flex', alignItems: 'center' },
-	color,
-})``;
+})`
+	color: ${({ theme }) => theme.palette.primary.main};
+`;
