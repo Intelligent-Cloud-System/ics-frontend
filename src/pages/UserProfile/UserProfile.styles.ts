@@ -6,6 +6,7 @@ export const UPContainer = styled(Container).attrs({
 	maxWidth: 'xl',
 })`
 	margin-top: 2rem;
+	color: ${({ theme }) => theme.palette.text.primary};
 `;
 
 export const FlexBox = styled(Box)`

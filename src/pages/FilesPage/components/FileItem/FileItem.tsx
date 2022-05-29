@@ -1,17 +1,19 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
-import CardContent from '@mui/material/CardContent';
-import Box from '@mui/material/Box';
-import LinearProgress from '@mui/material/LinearProgress';
 
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { bytesToSize } from 'shared/bytes-size';
 
 import { FileResponse } from 'clients/CoreService';
-import { CardCheckbox, WCard } from '.';
+import {
+	CardCheckbox,
+	CustomLinearProgress,
+	FileCard,
+	FileIcon,
+	FileItemContainer,
+} from './FileItem.styles';
+import { renderLongName } from '../renderers/renderLongName';
 
-export type FileInfo = Pick<FileResponse, 'name' | 'size'> & {
-	id?: number;
+export type FileInfo = Pick<FileResponse, 'basename' | 'size' | 'path'> & {
 	isLoading?: boolean;
 };
 
@@ -19,37 +21,31 @@ export interface FileItemProps {
 	file: FileInfo;
 	displayCheckbox: boolean;
 	checked?: boolean;
-	setChecked: React.Dispatch<React.SetStateAction<number[]>>;
+	setChecked: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export function FileItem({ file, checked, setChecked, displayCheckbox }: FileItemProps) {
-	const isCheckDisabled = file.isLoading || !file.id;
+	const isCheckDisabled = file.isLoading || !file.basename;
 
 	const handleClick = () => {
-		if (!isCheckDisabled && file.id !== undefined) {
-			if (checked) {
-				setChecked(ids => {
-					return ids.filter(id => id !== file.id);
-				});
-			} else {
-				setChecked(ids => [...ids, file.id as number]);
-			}
+		if (isCheckDisabled || !file.path) return;
+		if (checked) {
+			setChecked(prev => prev.filter(path => path !== file.path));
+		} else {
+			setChecked(pathes => [...pathes, file.path]);
 		}
 	};
 
+	const fileSize = bytesToSize(file.size);
+
 	return (
-		<WCard onClick={handleClick}>
-			{file.isLoading && <LinearProgress />}
-			{displayCheckbox && <CardCheckbox checked={!!checked} disabled={isCheckDisabled} />}
-			<CardContent>
-				<Box sx={{ display: 'flex', alignContent: 'center' }}>
-					<InsertDriveFileIcon fontSize='large' sx={{ mr: 1 }} />
-					<div>
-						<Typography variant='body2'>{file.name}</Typography>
-						<Typography variant='body2'>{bytesToSize(file.size)}</Typography>
-					</div>
-				</Box>
-			</CardContent>
-		</WCard>
+		<FileItemContainer>
+			<FileCard onClick={handleClick}>
+				{file.isLoading && <CustomLinearProgress />}
+				{displayCheckbox && <CardCheckbox checked={!!checked} disabled={isCheckDisabled} />}
+				<FileIcon />
+			</FileCard>
+			<Typography>{renderLongName(`${file.basename} (${fileSize})`)}</Typography>
+		</FileItemContainer>
 	);
 }

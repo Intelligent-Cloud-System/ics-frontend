@@ -10,14 +10,14 @@ export const FlexEndBox = styled(Box)`
 `;
 
 export const AccountButton = styled(Button)`
-	background-color: #512da8;
-	color: #ffffff;
+	background-color: ${({ theme }) => theme.palette.primary.main};
+	color: ${({ theme }) => theme.palette.grey[800]};
 	&: hover {
-		background-color: #ffffff;
-		color: #512da8;
+		background-color: ${({ theme }) => theme.palette.grey[800]};
+		color: ${({ theme }) => theme.palette.primary.main};
 	}
 `;
 
 export const UCard = styled(Card)`
-	background-color: #fcfcfc;
+	background-color: ${({ theme }) => theme.palette.grey[800]};
 `;
