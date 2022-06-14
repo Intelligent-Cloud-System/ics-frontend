@@ -3,7 +3,6 @@ import path from 'path';
 import fs from 'fs';
 
 import { generate } from 'openapi-typescript-codegen';
-import fetch from 'node-fetch';
 
 require('dotenv').config();
 
@@ -15,6 +14,12 @@ const dependedMicroservices = [
 	},
 ];
 
+function exists(path: string): Promise<boolean> {
+	return new Promise(resolve => {
+		return fs.access(path, fs.constants.F_OK, err => resolve(!err));
+	});
+}
+
 Promise.all(
 	dependedMicroservices.map(({ swaggerUrl, serviceName }: any) => {
 		const swaggerPath = path.join(__dirname, '..', 'temp');
@@ -23,9 +28,14 @@ Promise.all(
 
 		return fetch(swaggerUrl, { method: 'GET' })
 			.then(res => res.json())
-			.then((swagger: string) => {
-				if (!fs.existsSync(swaggerPath)) fs.mkdirSync(swaggerPath);
-				fs.writeFileSync(swaggerFilepath, Buffer.from(JSON.stringify(swagger), 'utf-8'));
+			.then(async (swagger: string) => {
+				const fileExists = await exists(swaggerPath);
+
+				if (fileExists) {
+					await fs.promises.mkdir(swaggerPath);
+				}
+
+				await fs.promises.writeFile(swaggerFilepath, Buffer.from(JSON.stringify(swagger), 'utf-8'));
 			})
 			.then(() =>
 				generate({
