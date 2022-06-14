@@ -20,6 +20,7 @@ import { LocationLinks } from './components/LocationLinks';
 import { uploadFileToS3 } from 'shared/fileUploadUtil';
 import { downloadFilesFromSignedUrls } from './components/utils/downloadFilesByLink';
 import { getBasename } from 'shared/util';
+import useSocket from '../../hooks/socket/useSocket';
 
 function FilesPage() {
 	const queryClient = useQueryClient();
@@ -49,8 +50,9 @@ function FilesPage() {
 					const fileName = getBasename(postUrl.path);
 					const file = files.find(file => file.name === fileName);
 					if (!file) {
-						onError(new Error(`Bad link generation for file ${fileName}`));
-						return;
+						const error = new Error(`Bad link generation for file ${fileName}`);
+						onError(error);
+						return error;
 					}
 					return uploadFileToS3(postUrl, file).then(() => {
 						setProcessingFiles(processingFiles =>
@@ -130,6 +132,15 @@ function FilesPage() {
 	useEffect(() => {
 		setCheckedItems([]);
 	}, [currentLocation]);
+
+	useSocket([
+		{
+			type: 'FilesListUpdated',
+			listener: async () => {
+				await queryClient.invalidateQueries(entities.file);
+			},
+		},
+	]);
 
 	return (
 		<Container maxWidth={false}>
