@@ -40,9 +40,7 @@ export default function useSocket(
 		const newSocket = io(OpenAPI.BASE, {
 			path: '/socket',
 			auth: { accessToken },
-			query: {
-				accessToken,
-			},
+			query: { accessToken },
 		});
 
 		newSocket.on('connect', () => {
