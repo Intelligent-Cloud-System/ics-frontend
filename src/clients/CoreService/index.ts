@@ -11,7 +11,6 @@ export type { FileManagerListResponse } from './models/FileManagerListResponse';
 export type { FileResponse } from './models/FileResponse';
 export type { FolderResponse } from './models/FolderResponse';
 export type { GetUrlInfo } from './models/GetUrlInfo';
-export type { GetUrlResponse } from './models/GetUrlResponse';
 export type { PostUrlInfo } from './models/PostUrlInfo';
 export type { ReceiveUrlGetRequest } from './models/ReceiveUrlGetRequest';
 export type { ReceiveUrlPostRequest } from './models/ReceiveUrlPostRequest';
@@ -19,6 +18,7 @@ export type { RegisterUserRequest } from './models/RegisterUserRequest';
 export type { SignedGetUrlsResponse } from './models/SignedGetUrlsResponse';
 export type { SignedPostUrlsResponse } from './models/SignedPostUrlsResponse';
 export type { UploadSingleFileInfo } from './models/UploadSingleFileInfo';
+export type { UserIconResponse } from './models/UserIconResponse';
 export type { UserResponse } from './models/UserResponse';
 
 export { FileManagerService } from './services/FileManagerService';

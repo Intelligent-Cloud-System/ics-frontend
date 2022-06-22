@@ -9,6 +9,7 @@ export const UAvatar = styled(Avatar)`
 	margin-bottom: 2rem;
 	width: 80px;
 	font-size: 2rem;
+	color: ${({ theme }) => theme.palette.primary.main};
 `;
 
 export const FlexBoxColumn = styled(Box)`

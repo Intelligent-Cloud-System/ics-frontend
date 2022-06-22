@@ -17,7 +17,7 @@ function UserProfile() {
 				<FlexBox>
 					{user && (
 						<>
-							<Account username={`${user.firstName} ${user.lastName}`} />
+							<Account username={`${user.firstName} ${user.lastName}`} userid={`${user.id}`} />
 							<AccountProfileDetails
 								email={user.email}
 								firstName={user.firstName}

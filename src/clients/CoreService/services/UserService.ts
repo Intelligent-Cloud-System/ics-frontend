@@ -1,8 +1,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { GetUrlResponse } from '../models/GetUrlResponse';
 import type { RegisterUserRequest } from '../models/RegisterUserRequest';
+import type { UserIconResponse } from '../models/UserIconResponse';
 import type { UserResponse } from '../models/UserResponse';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { request as __request } from '../core/request';
@@ -40,12 +40,12 @@ export class UserService {
 
     /**
      * @param userId
-     * @returns GetUrlResponse
+     * @returns UserIconResponse
      * @throws ApiError
      */
-    public static userIcon(
+    public static getUserIcon(
         userId: number,
-    ): CancelablePromise<GetUrlResponse> {
+    ): CancelablePromise<UserIconResponse> {
         return __request({
             method: 'GET',
             path: `/users/icon`,
