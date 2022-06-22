@@ -10,7 +10,7 @@ import { useQuery } from 'react-query';
  */
 export const GetUserIconUrl = (id: number): string => {
 	const { data: content, isLoading: isContentLoading } = useQuery('users/icon', () =>
-		UserService.userIcon(id),
+		UserService.getUserIcon(id),
 	);
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const url = useMemo(() => content?.url || '', [isContentLoading]);
