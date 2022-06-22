@@ -7,13 +7,14 @@ import { AccountButton, FlexBoxColumn, UAvatar, UCard } from './Account.styles';
 
 interface AccountProps {
 	username: string;
+	userid: string;
 }
 
-export const Account = ({ username }: AccountProps): JSX.Element => (
+export const Account = ({ username, userid }: AccountProps): JSX.Element => (
 	<UCard>
 		<CardContent>
 			<FlexBoxColumn>
-				<UAvatar {...stringAvatar(username)} />
+				<UAvatar {...stringAvatar(username, userid)} />
 				<Typography color='textPrimary' gutterBottom variant='h5'>
 					{username}
 				</Typography>

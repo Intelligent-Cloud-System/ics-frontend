@@ -1,27 +1,28 @@
-function stringToColor(string: string) {
-	let hash = 0;
-	let i;
+import { UserService } from 'clients/CoreService';
+import { useMemo } from 'react';
+import { useQuery } from 'react-query';
 
-	/* eslint-disable no-bitwise */
-	for (i = 0; i < string.length; i += 1) {
-		hash = string.charCodeAt(i) + ((hash << 5) - hash);
-	}
+/**
+ * Upload file to S3 with previously received pre-signed POST data.
+ * @param postUrl
+ * @param file
+ * @returns {Promise<void>}
+ */
+export const GetUserIconUrl = (id: number): string => {
+	const { data: content, isLoading: isContentLoading } = useQuery('users/icon', () =>
+		UserService.userIcon(id),
+	);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	const url = useMemo(() => content?.url || '', [isContentLoading]);
 
-	let color = '#';
+	return url;
+};
 
-	for (i = 0; i < 3; i += 1) {
-		const value = (hash >> (i * 8)) & 0xff;
-		color += `00${value.toString(16)}`.substr(-2);
-	}
-	/* eslint-enable no-bitwise */
-
-	return color;
-}
-
-export function stringAvatar(name: string) {
+export function stringAvatar(name: string, id: string) {
 	return {
 		sx: {
-			bgcolor: stringToColor(name),
+			backgroundImage: `url(${GetUserIconUrl(parseInt(id))})`,
+			backgroundSize: 'contain',
 		},
 		children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
 	};

@@ -4,6 +4,12 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import styled from 'styled-components';
+import { Avatar } from '@mui/material';
+
+export const UAvatar = styled(Avatar)`
+	color: ${({ theme }) => theme.palette.primary.main};
+	cursor: 'pointer';
+`;
 
 export const NavToolbar = styled(Toolbar)`
 	background-color: ${({ theme }) => theme.palette.grey[300]};

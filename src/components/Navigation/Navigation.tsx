@@ -3,7 +3,6 @@ import path from 'path';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import Avatar from '@mui/material/Avatar';
 import Popover from '@mui/material/Popover';
 import CloudIcon from '@mui/icons-material/Cloud';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -18,6 +17,7 @@ import {
 	PopoverContainer,
 	PopoverButton,
 	NLink,
+	UAvatar,
 } from './Navigation.styles';
 
 import { useLogout } from 'hooks/auth/useLogout';
@@ -30,6 +30,7 @@ import { appPaths } from 'App.routes';
 export default function Navigation() {
 	const user = useContext<UserResponse | null>(UserContext);
 	const [username] = useState<string>(`${user?.firstName} ${user?.lastName}`);
+	const [userid] = useState<string>(`${user?.id}`);
 	const [opened, setOpened] = useState<boolean>(false);
 
 	const avatarContainerRef = React.useRef<HTMLDivElement>(null);
@@ -62,11 +63,10 @@ export default function Navigation() {
 						</FlexBox>
 
 						<InlineBlock>
-							<Avatar
-								{...stringAvatar(username)}
+							<UAvatar
+								{...stringAvatar(username, userid)}
 								ref={avatarContainerRef}
 								onClick={handleClick}
-								style={{ cursor: 'pointer' }}
 							/>
 							<Popover
 								anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
