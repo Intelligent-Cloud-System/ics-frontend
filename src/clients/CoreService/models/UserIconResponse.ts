@@ -2,6 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type GetUrlResponse = {
+export type UserIconResponse = {
     url: string;
 }
