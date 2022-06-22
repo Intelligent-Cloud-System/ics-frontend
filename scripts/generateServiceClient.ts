@@ -31,7 +31,7 @@ Promise.all(
 			.then(async (swagger: string) => {
 				const fileExists = await exists(swaggerPath);
 
-				if (fileExists) {
+				if (!fileExists) {
 					await fs.promises.mkdir(swaggerPath);
 				}
 
